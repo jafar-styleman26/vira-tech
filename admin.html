@@ -92,7 +92,6 @@ h1{font-size:20px}
 </head>
 <body>
 
-<!-- صفحه ورود -->
 <div class="login-screen">
  <div class="login-box">
   <div class="login-logo">VIRA TECH</div>
@@ -226,21 +225,36 @@ h1{font-size:20px}
 <section class="page" id="settings">
  <div class="panel">
   <h2>تنظیمات پنل</h2>
-  <div class="activity"><span>نسخه پنل</span><strong>۳.۰</strong></div>
+  <div class="activity"><span>نسخه پنل</span><strong>۴.۰</strong></div>
   <div class="activity"><span>وضعیت ذخیره‌سازی</span><strong class="green">فعال در مرورگر</strong></div>
   <div class="activity"><span>وضعیت ورود</span><strong>مدیر</strong></div>
  </div>
+
+ <div class="panel">
+  <h2>پشتیبان‌گیری و بازیابی اطلاعات</h2>
+  <p class="muted">از پروژه‌ها، مشتریان و خدمات خود فایل پشتیبان تهیه کنید.</p>
+  <div class="actions">
+   <button class="btn" type="button" id="backupButton">دریافت فایل پشتیبان</button>
+   <button class="btn secondary" type="button" id="restoreButton">بازیابی اطلاعات</button>
+   <input type="file" id="restoreFile" accept=".json,application/json" class="hidden">
+  </div>
+  <p class="muted" id="backupMessage"></p>
+ </div>
+
  <div class="panel">
   <h2>پاک‌سازی اطلاعات</h2>
   <p class="muted">این گزینه تمام پروژه‌ها، مشتریان و خدمات ثبت‌شده را حذف می‌کند.</p>
-  <div class="actions"><button class="btn danger" id="resetData">حذف تمام اطلاعات</button></div>
+  <div class="actions"><button class="btn danger" id="resetData" type="button">حذف تمام اطلاعات</button></div>
  </div>
 </section>
+
 <div class="footer">VIRA TECH © 2026 — تمام حقوق محفوظ است.</div>
 </main>
 </div>
 
 <script>
+"use strict";
+
 const $=id=>document.getElementById(id);
 
 const defaultServices=[
@@ -255,8 +269,10 @@ const defaultServices=[
 function load(key,fallback){
  try{
   const value=JSON.parse(localStorage.getItem(key));
-  return Array.isArray(value)?value:fallback;
- }catch(e){return fallback;}
+  return Array.isArray(value)?value:fallback.map?fallback.map(x=>({...x})):fallback;
+ }catch(e){
+  return fallback.map?fallback.map(x=>({...x})):fallback;
+ }
 }
 
 let projects=load("vira_projects",[]);
@@ -329,7 +345,7 @@ function updateDashboard(){
  $("waitCount").textContent=fa(projects.filter(p=>p.status==="wait").length);
  const recent=projects.slice(-5).reverse();
  $("recentProjects").innerHTML=recent.length?recent.map(p=>
- `<div class="activity"><span>${safe(p.name)}</span><span>${statusText[p.status]}</span></div>`
+ `<div class="activity"><span>${safe(p.name)}</span><span>${statusText[p.status]||"نامشخص"}</span></div>`
  ).join(""):"هنوز پروژه‌ای ثبت نشده است.";
 }
 
@@ -338,11 +354,11 @@ function renderProjects(){
  $("projectRows").innerHTML=projects.length?projects.map(p=>`
  <tr>
  <td>${safe(p.name)}</td><td>${safe(p.customer||"—")}</td>
- <td><span class="status ${p.status}">${statusText[p.status]}</span></td>
+ <td><span class="status ${safe(p.status)}">${statusText[p.status]||"نامشخص"}</span></td>
  <td>${safe(p.date||"—")}</td>
  <td>
- <button class="btn small secondary" onclick="editProjectItem(${p.id})">ویرایش</button>
- <button class="btn small danger" onclick="deleteProject(${p.id})">حذف</button>
+ <button class="btn small secondary" onclick="editProjectItem(${Number(p.id)})">ویرایش</button>
+ <button class="btn small danger" onclick="deleteProject(${Number(p.id)})">حذف</button>
  </td></tr>`).join(""):'<tr><td colspan="5" class="empty">پروژه‌ای ثبت نشده است.</td></tr>';
 }
 $("projectForm").addEventListener("submit",e=>{
@@ -362,7 +378,7 @@ function editProjectItem(id){
  const p=projects.find(x=>x.id===id);if(!p)return;
  editProject=id;
  $("projectName").value=p.name;
- $("projectCustomer").value=p.customer;
+ $("projectCustomer").value=p.customer||"";
  $("projectStatus").value=p.status;
  $("projectDate").value=p.date||"";
  $("projectSubmit").textContent="ذخیره تغییرات";
@@ -384,8 +400,8 @@ function renderCustomers(){
  $("customerRows").innerHTML=customers.length?customers.map(c=>`
  <tr><td>${safe(c.name)}</td><td>${safe(c.phone||"—")}</td>
  <td>${safe(c.email||"—")}</td><td>
- <button class="btn small secondary" onclick="editCustomerItem(${c.id})">ویرایش</button>
- <button class="btn small danger" onclick="deleteCustomer(${c.id})">حذف</button>
+ <button class="btn small secondary" onclick="editCustomerItem(${Number(c.id)})">ویرایش</button>
+ <button class="btn small danger" onclick="deleteCustomer(${Number(c.id)})">حذف</button>
  </td></tr>`).join(""):'<tr><td colspan="4" class="empty">مشتری‌ای ثبت نشده است.</td></tr>';
 }
 $("customerForm").addEventListener("submit",e=>{
@@ -404,8 +420,8 @@ function editCustomerItem(id){
  const c=customers.find(x=>x.id===id);if(!c)return;
  editCustomer=id;
  $("customerName").value=c.name;
- $("customerPhone").value=c.phone;
- $("customerEmail").value=c.email;
+ $("customerPhone").value=c.phone||"";
+ $("customerEmail").value=c.email||"";
  $("customerSubmit").textContent="ذخیره تغییرات";
  $("cancelCustomer").classList.remove("hidden");
 }
@@ -428,9 +444,9 @@ function renderServices(){
  <div class="muted">${safe(s.description||"بدون توضیحات")}</div>
  <span class="muted">${s.active?"فعال":"غیرفعال"}</span></div>
  <div class="actions">
- <button class="btn small secondary" onclick="toggleService(${s.id})">${s.active?"غیرفعال‌کردن":"فعال‌کردن"}</button>
- <button class="btn small secondary" onclick="editServiceItem(${s.id})">ویرایش</button>
- <button class="btn small danger" onclick="deleteService(${s.id})">حذف</button>
+ <button class="btn small secondary" onclick="toggleService(${Number(s.id)})">${s.active?"غیرفعال‌کردن":"فعال‌کردن"}</button>
+ <button class="btn small secondary" onclick="editServiceItem(${Number(s.id)})">ویرایش</button>
+ <button class="btn small danger" onclick="deleteService(${Number(s.id)})">حذف</button>
  </div></div>`).join(""):'<div class="empty">خدمتی ثبت نشده است.</div>';
 }
 $("serviceForm").addEventListener("submit",e=>{
@@ -450,7 +466,7 @@ function editServiceItem(id){
  const s=services.find(x=>x.id===id);if(!s)return;
  editService=id;
  $("serviceName").value=s.name;
- $("serviceDescription").value=s.description;
+ $("serviceDescription").value=s.description||"";
  $("serviceSubmit").textContent="ذخیره تغییرات";
  $("cancelService").classList.remove("hidden");
 }
@@ -469,6 +485,92 @@ function resetServiceForm(){
 }
 $("cancelService").onclick=resetServiceForm;
 
+/* پشتیبان‌گیری */
+$("backupButton").addEventListener("click",()=>{
+ try{
+  const backup={
+   app:"VIRA TECH",
+   version:"4.0",
+   date:new Date().toISOString(),
+   projects:projects,
+   customers:customers,
+   services:services
+  };
+
+  const blob=new Blob(
+   [JSON.stringify(backup,null,2)],
+   {type:"application/json"}
+  );
+
+  const url=URL.createObjectURL(blob);
+  const link=document.createElement("a");
+  link.href=url;
+  link.download="VIRA-TECH-Backup.json";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+
+  $("backupMessage").textContent="فایل پشتیبان آماده شد.";
+ }catch(error){
+  alert("ساخت فایل پشتیبان انجام نشد.");
+ }
+});
+
+/* بازیابی */
+$("restoreButton").addEventListener("click",()=>{
+ $("restoreFile").click();
+});
+
+$("restoreFile").addEventListener("change",event=>{
+ const file=event.target.files[0];
+ if(!file)return;
+
+ const reader=new FileReader();
+
+ reader.onload=()=>{
+  try{
+   const data=JSON.parse(reader.result);
+
+   if(
+    data.app!=="VIRA TECH"||
+    !Array.isArray(data.projects)||
+    !Array.isArray(data.customers)||
+    !Array.isArray(data.services)
+   ){
+    throw new Error("Invalid backup");
+   }
+
+   if(!confirm("اطلاعات فعلی با اطلاعات فایل پشتیبان جایگزین شوند؟")){
+    event.target.value="";
+    return;
+   }
+
+   projects=data.projects;
+   customers=data.customers;
+   services=data.services;
+
+   save();
+   renderAll();
+
+   $("backupMessage").textContent="اطلاعات با موفقیت بازیابی شدند.";
+   alert("بازیابی اطلاعات انجام شد.");
+
+  }catch(error){
+   alert("فایل پشتیبان معتبر نیست یا ساختار آن صحیح نیست.");
+  }
+
+  event.target.value="";
+ };
+
+ reader.onerror=()=>{
+  alert("خواندن فایل با مشکل مواجه شد.");
+  event.target.value="";
+ };
+
+ reader.readAsText(file);
+});
+
 /* تنظیمات */
 $("resetData").onclick=()=>{
  if(!confirm("تمام پروژه‌ها، مشتریان و خدمات حذف شوند؟"))return;
@@ -483,6 +585,7 @@ function renderAll(){
  renderServices();
  updateDashboard();
 }
+
 save();
 renderAll();
 </script>
