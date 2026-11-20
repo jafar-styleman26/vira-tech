@@ -1,0 +1,134 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>پنل مدیریت | VIRA TECH</title>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Vazirmatn, sans-serif;
+      background: #080b18;
+      color: #f4f5ff;
+      min-height: 100vh;
+    }
+    .layout { display: flex; min-height: 100vh; }
+    aside {
+      width: 250px;
+      background: #101529;
+      border-left: 1px solid #252c46;
+      padding: 28px 18px;
+      flex-shrink: 0;
+    }
+    .logo { font-size: 25px; font-weight: 800; color: #9a83ff; margin-bottom: 8px; }
+    .subtitle { color: #8991ad; font-size: 12px; margin-bottom: 38px; }
+    .menu-title { color: #737d9d; font-size: 12px; margin: 20px 10px 12px; }
+    .menu a {
+      display: block; text-decoration: none; color: #c4c9dc;
+      padding: 13px 14px; border-radius: 10px; margin-bottom: 7px;
+      font-size: 14px; transition: .2s;
+    }
+    .menu a.active, .menu a:hover { background: #29264d; color: #b7a6ff; }
+    main { flex: 1; padding: 35px; min-width: 0; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 35px; }
+    h1 { font-size: 25px; }
+    .welcome { color: #8991ad; font-size: 13px; margin-top: 7px; }
+    .admin { background: #171e35; padding: 10px 16px; border-radius: 12px; font-size: 13px; }
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 28px; }
+    .card, .panel { background: #11182c; border: 1px solid #252d49; border-radius: 16px; padding: 22px; }
+    .card-label { color: #9ba4c0; font-size: 13px; }
+    .number { font-size: 30px; font-weight: 800; margin-top: 12px; }
+    .purple { color: #a18aff; }
+    .blue { color: #59aaff; }
+    .green { color: #55d6a0; }
+    .panel h2 { font-size: 17px; margin-bottom: 20px; }
+    .activity { display: flex; justify-content: space-between; gap: 12px; padding: 15px 0; border-bottom: 1px solid #252d49; font-size: 13px; }
+    .activity:last-child { border: 0; }
+    .status { color: #55d6a0; }
+    .note { color: #8991ad; font-size: 12px; margin-top: 22px; }
+    @media(max-width: 850px) {
+      aside { width: 205px; }
+      main { padding: 24px; }
+      .cards { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media(max-width: 600px) {
+      .layout { display: block; }
+      aside { width: 100%; padding: 18px; }
+      .subtitle { margin-bottom: 15px; }
+      .menu { display: flex; gap: 7px; overflow-x: auto; }
+      .menu-title { display: none; }
+      .menu a { white-space: nowrap; margin: 0; padding: 10px; }
+      main { padding: 20px 15px; }
+      .cards { grid-template-columns: 1fr; }
+      .topbar { align-items: flex-start; }
+      h1 { font-size: 21px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside>
+      <div class="logo">VIRA TECH</div>
+      <div class="subtitle">پنل مدیریت اختصاصی</div>
+      <div class="menu-title">منوی اصلی</div>
+      <nav class="menu">
+        <a href="#dashboard" class="active">داشبورد</a>
+        <a href="#projects">پروژه‌ها</a>
+        <a href="#customers">مشتریان</a>
+        <a href="#services">خدمات</a>
+        <a href="#settings">تنظیمات</a>
+      </nav>
+    </aside>
+
+    <main id="dashboard">
+      <div class="topbar">
+        <div>
+          <h1>داشبورد مدیریت</h1>
+          <p class="welcome">به پنل مدیریت VIRA TECH خوش آمدید.</p>
+        </div>
+        <div class="admin">مدیر سیستم</div>
+      </div>
+
+      <section class="cards">
+        <div class="card">
+          <div class="card-label">کل پروژه‌ها</div>
+          <div class="number purple">۰</div>
+        </div>
+        <div class="card">
+          <div class="card-label">کل مشتریان</div>
+          <div class="number blue">۰</div>
+        </div>
+        <div class="card">
+          <div class="card-label">خدمات فعال</div>
+          <div class="number green">۶</div>
+        </div>
+      </section>
+
+      <section class="panel" id="projects">
+        <h2>وضعیت پروژه‌ها</h2>
+        <div class="activity">
+          <span>پروژه‌های در حال انجام</span>
+          <span class="status">۰ پروژه</span>
+        </div>
+        <div class="activity" id="customers">
+          <span>مشتریان ثبت‌شده</span>
+          <span>۰ مشتری</span>
+        </div>
+        <div class="activity" id="services">
+          <span>خدمات VIRA TECH</span>
+          <span class="status">۶ خدمت فعال</span>
+        </div>
+      </section>
+
+      <section class="panel" id="settings" style="margin-top:22px">
+        <h2>تنظیمات پنل</h2>
+        <p style="color:#aab1ca;font-size:13px">این نسخه اولیه داشبورد است. امکانات مدیریت اطلاعات را در مراحل بعد اضافه می‌کنیم.</p>
+      </section>
+
+      <p class="note">VIRA TECH © 2026 — تمام حقوق محفوظ است.</p>
+    </main>
+  </div>
+</body>
+</html>
