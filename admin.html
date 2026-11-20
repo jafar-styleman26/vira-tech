@@ -9,13 +9,13 @@
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#080b18;color:#f4f5ff;font-family:Vazirmatn,sans-serif}
-button,input,select{font:inherit}
+button,input,select,textarea{font:inherit}
 button{cursor:pointer}
 .login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
 .login-box{width:100%;max-width:400px;padding:32px;background:#11182c;border:1px solid #34345b;border-radius:18px;text-align:center}
-.login-logo{font-size:30px;font-weight:800;color:#a18aff}
+.login-logo,.logo{font-size:27px;font-weight:800;color:#a18aff}
 .login-box h2{margin:10px 0 5px}
-.login-box p{color:#8991ad;font-size:13px;margin-bottom:25px}
+.login-box p,.muted{color:#8991ad;font-size:12px}
 .login-box input{margin-bottom:14px}
 .login-box button{width:100%}
 .login-error{color:#ff7777;font-size:13px;margin-top:12px}
@@ -23,14 +23,13 @@ button{cursor:pointer}
 body.logged-in .layout{display:flex}
 body.logged-in .login-screen{display:none}
 aside{width:245px;background:#101529;border-left:1px solid #252c46;padding:25px 17px;flex-shrink:0}
-.logo{font-size:25px;font-weight:800;color:#a18aff}
-.sub{font-size:12px;color:#8991ad;margin:5px 0 30px}
+.sub{font-size:12px;color:#8991ad;margin:5px 0 25px}
 .menu-title{font-size:12px;color:#737d9d;margin:20px 10px 10px}
-.nav button{display:block;width:100%;text-align:right;border:0;background:transparent;color:#c4c9dc;padding:13px;border-radius:10px;margin:4px 0}
+.nav button{display:block;width:100%;text-align:right;border:0;background:transparent;color:#c4c9dc;padding:12px;border-radius:10px;margin:4px 0}
 .nav button:hover,.nav button.active{background:#29264d;color:#b7a6ff}
 main{flex:1;min-width:0;padding:30px}
 .top{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:28px}
-h1{font-size:24px;margin:0}
+h1{font-size:23px;margin:0}
 .welcome{color:#8991ad;font-size:13px;margin-top:6px}
 .page{display:none}
 .page.active{display:block}
@@ -51,8 +50,9 @@ h1{font-size:24px;margin:0}
 .form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}
 .field.full{grid-column:1/-1}
 label{font-size:13px;color:#aeb6d0}
-input,select{width:100%;padding:11px 12px;border:1px solid #303957;background:#0b1123;color:white;border-radius:9px;outline:none}
-input:focus,select:focus{border-color:#9278ff}
+input,select,textarea{width:100%;padding:11px 12px;border:1px solid #303957;background:#0b1123;color:white;border-radius:9px;outline:none}
+textarea{min-height:95px;resize:vertical}
+input:focus,select:focus,textarea:focus{border-color:#9278ff}
 .actions{display:flex;gap:8px;margin-top:15px;flex-wrap:wrap}
 .table-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;min-width:600px}
@@ -64,13 +64,13 @@ td{color:#e0e4f5}
 .status.progress{background:#30294f;color:#c0aaff}
 .status.wait{background:#49351f;color:#ffcc7c}
 .empty{text-align:center;color:#8991ad;padding:25px}
-.activity{display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid #252d49;font-size:13px}
+.activity{display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid #252d49;font-size:13px;gap:10px}
 .activity:last-child{border:0}
 .service-item{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:15px 0;border-bottom:1px solid #252d49}
 .service-item:last-child{border:0}
-.muted{color:#8991ad;font-size:12px}
 .footer{color:#727d9b;font-size:12px;margin-top:25px}
 .hidden{display:none!important}
+.notice{padding:13px;background:#18213b;border:1px solid #34345b;border-radius:10px;color:#b9c2e0;font-size:12px;line-height:2;margin-bottom:15px}
 @media(max-width:800px){
 .layout{display:block}
 aside{width:100%;padding:17px}
@@ -85,7 +85,7 @@ main{padding:20px 14px}
 .form-grid{grid-template-columns:1fr}
 .field.full{grid-column:auto}
 .top{align-items:flex-start}
-h1{font-size:20px}
+h1{font-size:19px}
 .service-item{align-items:flex-start;flex-direction:column}
 }
 </style>
@@ -93,159 +93,195 @@ h1{font-size:20px}
 <body>
 
 <div class="login-screen">
- <div class="login-box">
-  <div class="login-logo">VIRA TECH</div>
-  <h2>ورود مدیر سیستم</h2>
-  <p>برای ورود به پنل مدیریت اطلاعات خود را وارد کنید.</p>
-  <form id="loginForm">
-   <input id="username" placeholder="نام کاربری" autocomplete="username" required>
-   <input id="password" type="password" placeholder="رمز عبور" autocomplete="current-password" required>
-   <button class="btn" type="submit">ورود به پنل مدیریت</button>
-  </form>
-  <div id="loginError" class="login-error"></div>
- </div>
+<div class="login-box">
+<div class="login-logo">VIRA TECH</div>
+<h2>ورود مدیر سیستم</h2>
+<p>برای ورود به پنل مدیریت اطلاعات خود را وارد کنید.</p>
+<form id="loginForm">
+<input id="username" placeholder="نام کاربری" autocomplete="username" required>
+<input id="password" type="password" placeholder="رمز عبور" autocomplete="current-password" required>
+<button class="btn" type="submit">ورود به پنل مدیریت</button>
+</form>
+<div id="loginError" class="login-error"></div>
+</div>
 </div>
 
 <div class="layout">
 <aside>
- <div class="logo">VIRA TECH</div>
- <div class="sub">پنل مدیریت اختصاصی</div>
- <div class="menu-title">منوی اصلی</div>
- <nav class="nav menu">
-  <button class="active" data-page="dashboard">◈ داشبورد</button>
-  <button data-page="projects">▣ پروژه‌ها</button>
-  <button data-page="customers">♙ مشتریان</button>
-  <button data-page="services">✦ خدمات</button>
-  <button data-page="settings">⚙ تنظیمات</button>
- </nav>
+<div class="logo">VIRA TECH</div>
+<div class="sub">پنل مدیریت اختصاصی</div>
+<div class="menu-title">منوی اصلی</div>
+<nav class="nav menu">
+<button class="active" data-page="dashboard">◈ داشبورد</button>
+<button data-page="projects">▣ پروژه‌ها</button>
+<button data-page="customers">♙ مشتریان</button>
+<button data-page="services">✦ خدمات</button>
+<button data-page="content">✎ محتوای سایت</button>
+<button data-page="settings">⚙ تنظیمات</button>
+</nav>
 </aside>
 
 <main>
- <div class="top">
-  <div>
-   <h1 id="pageTitle">داشبورد مدیریت</h1>
-   <div class="welcome">به پنل مدیریت VIRA TECH خوش آمدید.</div>
-  </div>
-  <button class="btn danger" id="logout">خروج از پنل</button>
- </div>
+<div class="top">
+<div>
+<h1 id="pageTitle">داشبورد مدیریت</h1>
+<div class="welcome">به پنل مدیریت VIRA TECH خوش آمدید.</div>
+</div>
+<button class="btn danger" id="logout">خروج از پنل</button>
+</div>
 
 <section class="page active" id="dashboard">
- <div class="cards">
-  <div class="card"><div class="card-label">کل پروژه‌ها</div><div class="number purple" id="totalProjects">۰</div></div>
-  <div class="card"><div class="card-label">کل مشتریان</div><div class="number blue" id="totalCustomers">۰</div></div>
-  <div class="card"><div class="card-label">خدمات فعال</div><div class="number green" id="totalServices">۶</div></div>
- </div>
- <div class="panel">
-  <h2>وضعیت پروژه‌ها</h2>
-  <div class="activity"><span>در حال انجام</span><strong id="progressCount">۰</strong></div>
-  <div class="activity"><span>تکمیل‌شده</span><strong id="doneCount">۰</strong></div>
-  <div class="activity"><span>در انتظار</span><strong id="waitCount">۰</strong></div>
- </div>
- <div class="panel">
-  <h2>آخرین پروژه‌ها</h2>
-  <div id="recentProjects" class="muted">هنوز پروژه‌ای ثبت نشده است.</div>
- </div>
+<div class="cards">
+<div class="card"><div class="card-label">کل پروژه‌ها</div><div class="number purple" id="totalProjects">۰</div></div>
+<div class="card"><div class="card-label">کل مشتریان</div><div class="number blue" id="totalCustomers">۰</div></div>
+<div class="card"><div class="card-label">خدمات فعال</div><div class="number green" id="totalServices">۰</div></div>
+</div>
+<div class="panel">
+<h2>وضعیت پروژه‌ها</h2>
+<div class="activity"><span>در حال انجام</span><strong id="progressCount">۰</strong></div>
+<div class="activity"><span>تکمیل‌شده</span><strong id="doneCount">۰</strong></div>
+<div class="activity"><span>در انتظار</span><strong id="waitCount">۰</strong></div>
+</div>
+<div class="panel">
+<h2>آخرین پروژه‌ها</h2>
+<div id="recentProjects" class="muted">هنوز پروژه‌ای ثبت نشده است.</div>
+</div>
 </section>
 
 <section class="page" id="projects">
- <div class="panel">
-  <h2>ثبت پروژه جدید</h2>
-  <form id="projectForm">
-   <div class="form-grid">
-    <div class="field"><label>نام پروژه</label><input id="projectName" required></div>
-    <div class="field"><label>نام مشتری</label><input id="projectCustomer"></div>
-    <div class="field"><label>وضعیت</label>
-     <select id="projectStatus">
-      <option value="wait">در انتظار</option>
-      <option value="progress">در حال انجام</option>
-      <option value="done">تکمیل‌شده</option>
-     </select>
-    </div>
-    <div class="field"><label>تاریخ</label><input id="projectDate" type="date"></div>
-   </div>
-   <div class="actions">
-    <button class="btn" id="projectSubmit">ثبت پروژه</button>
-    <button class="btn secondary hidden" type="button" id="cancelProject">لغو ویرایش</button>
-   </div>
-  </form>
- </div>
- <div class="panel">
-  <h2>فهرست پروژه‌ها</h2>
-  <div class="table-wrap"><table>
-   <thead><tr><th>نام پروژه</th><th>مشتری</th><th>وضعیت</th><th>تاریخ</th><th>عملیات</th></tr></thead>
-   <tbody id="projectRows"></tbody>
-  </table></div>
- </div>
+<div class="panel">
+<h2>ثبت پروژه جدید</h2>
+<form id="projectForm">
+<div class="form-grid">
+<div class="field"><label>نام پروژه</label><input id="projectName" required></div>
+<div class="field"><label>نام مشتری</label><input id="projectCustomer"></div>
+<div class="field"><label>وضعیت</label><select id="projectStatus"><option value="wait">در انتظار</option><option value="progress">در حال انجام</option><option value="done">تکمیل‌شده</option></select></div>
+<div class="field"><label>تاریخ</label><input id="projectDate" type="date"></div>
+</div>
+<div class="actions">
+<button class="btn" id="projectSubmit">ثبت پروژه</button>
+<button class="btn secondary hidden" type="button" id="cancelProject">لغو ویرایش</button>
+</div>
+</form>
+</div>
+<div class="panel">
+<h2>فهرست پروژه‌ها</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>نام پروژه</th><th>مشتری</th><th>وضعیت</th><th>تاریخ</th><th>عملیات</th></tr></thead>
+<tbody id="projectRows"></tbody>
+</table></div>
+</div>
 </section>
 
 <section class="page" id="customers">
- <div class="panel">
-  <h2>ثبت مشتری جدید</h2>
-  <form id="customerForm">
-   <div class="form-grid">
-    <div class="field"><label>نام مشتری</label><input id="customerName" required></div>
-    <div class="field"><label>شماره تماس</label><input id="customerPhone"></div>
-    <div class="field full"><label>ایمیل</label><input id="customerEmail" type="email"></div>
-   </div>
-   <div class="actions">
-    <button class="btn" id="customerSubmit">ثبت مشتری</button>
-    <button class="btn secondary hidden" type="button" id="cancelCustomer">لغو ویرایش</button>
-   </div>
-  </form>
- </div>
- <div class="panel">
-  <h2>فهرست مشتریان</h2>
-  <div class="table-wrap"><table>
-   <thead><tr><th>نام</th><th>شماره تماس</th><th>ایمیل</th><th>عملیات</th></tr></thead>
-   <tbody id="customerRows"></tbody>
-  </table></div>
- </div>
+<div class="panel">
+<h2>ثبت مشتری جدید</h2>
+<form id="customerForm">
+<div class="form-grid">
+<div class="field"><label>نام مشتری</label><input id="customerName" required></div>
+<div class="field"><label>شماره تماس</label><input id="customerPhone"></div>
+<div class="field full"><label>ایمیل</label><input id="customerEmail" type="email"></div>
+</div>
+<div class="actions">
+<button class="btn" id="customerSubmit">ثبت مشتری</button>
+<button class="btn secondary hidden" type="button" id="cancelCustomer">لغو ویرایش</button>
+</div>
+</form>
+</div>
+<div class="panel">
+<h2>فهرست مشتریان</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>نام</th><th>شماره تماس</th><th>ایمیل</th><th>عملیات</th></tr></thead>
+<tbody id="customerRows"></tbody>
+</table></div>
+</div>
 </section>
 
 <section class="page" id="services">
- <div class="panel">
-  <h2>افزودن خدمت جدید</h2>
-  <form id="serviceForm">
-   <div class="form-grid">
-    <div class="field"><label>نام خدمت</label><input id="serviceName" required></div>
-    <div class="field"><label>توضیحات</label><input id="serviceDescription"></div>
-   </div>
-   <div class="actions">
-    <button class="btn" id="serviceSubmit">افزودن خدمت</button>
-    <button class="btn secondary hidden" type="button" id="cancelService">لغو ویرایش</button>
-   </div>
-  </form>
- </div>
- <div class="panel">
-  <h2>خدمات VIRA TECH</h2>
-  <div id="serviceRows"></div>
- </div>
+<div class="panel">
+<h2>افزودن خدمت جدید</h2>
+<form id="serviceForm">
+<div class="form-grid">
+<div class="field"><label>نام خدمت</label><input id="serviceName" required></div>
+<div class="field"><label>توضیحات</label><input id="serviceDescription"></div>
+</div>
+<div class="actions">
+<button class="btn" id="serviceSubmit">افزودن خدمت</button>
+<button class="btn secondary hidden" type="button" id="cancelService">لغو ویرایش</button>
+</div>
+</form>
+</div>
+<div class="panel">
+<h2>خدمات VIRA TECH</h2>
+<div id="serviceRows"></div>
+</div>
+</section>
+
+<section class="page" id="content">
+<div class="notice">
+اطلاعات این بخش در مرورگر ذخیره می‌شوند. پس از ویرایش، فایل JSON را دریافت و در مخزن GitHub سایت بارگذاری کن تا تغییرات برای همه بازدیدکنندگان منتشر شوند.
+</div>
+<div class="panel">
+<h2>محتوای صفحه اصلی</h2>
+<form id="contentForm">
+<div class="form-grid">
+<div class="field full"><label>عنوان اصلی سایت</label><input id="siteTitle" placeholder="مثلاً طراحی دیجیتال، فراتر از انتظار"></div>
+<div class="field full"><label>متن معرفی صفحه اصلی</label><textarea id="siteDescription"></textarea></div>
+<div class="field"><label>عنوان بخش درباره ما</label><input id="aboutTitle"></div>
+<div class="field"><label>متن دکمه اصلی</label><input id="buttonText"></div>
+<div class="field full"><label>توضیحات درباره ما</label><textarea id="aboutDescription"></textarea></div>
+<div class="field"><label>شماره واتساپ</label><input id="sitePhone" placeholder="989058434159"></div>
+<div class="field"><label>ایمیل سایت</label><input id="siteEmail" type="email"></div>
+</div>
+<div class="actions">
+<button class="btn" type="submit">ذخیره محتوای سایت</button>
+</div>
+</form>
+</div>
+<div class="panel">
+<h2>نمونه‌کارهای سایت</h2>
+<form id="portfolioForm">
+<div class="form-grid">
+<div class="field"><label>عنوان نمونه‌کار</label><input id="portfolioName" required></div>
+<div class="field"><label>لینک نمونه‌کار</label><input id="portfolioLink" type="url" placeholder="https://example.com"></div>
+<div class="field full"><label>توضیحات</label><textarea id="portfolioDescription"></textarea></div>
+</div>
+<div class="actions">
+<button class="btn" type="submit">افزودن نمونه‌کار</button>
+</div>
+</form>
+<div id="portfolioRows"></div>
+</div>
+<div class="panel">
+<h2>انتشار محتوای سایت</h2>
+<p class="muted">پس از ذخیره تغییرات، فایل site-content.json را دانلود کن و در پوشه اصلی مخزن GitHub قرار بده.</p>
+<button class="btn" id="exportContent" type="button">دریافت فایل محتوای سایت</button>
+<p class="muted" id="contentMessage"></p>
+</div>
 </section>
 
 <section class="page" id="settings">
- <div class="panel">
-  <h2>تنظیمات پنل</h2>
-  <div class="activity"><span>نسخه پنل</span><strong>۴.۰</strong></div>
-  <div class="activity"><span>وضعیت ذخیره‌سازی</span><strong class="green">فعال در مرورگر</strong></div>
-  <div class="activity"><span>وضعیت ورود</span><strong>مدیر</strong></div>
- </div>
-
- <div class="panel">
-  <h2>پشتیبان‌گیری و بازیابی اطلاعات</h2>
-  <p class="muted">از پروژه‌ها، مشتریان و خدمات خود فایل پشتیبان تهیه کنید.</p>
-  <div class="actions">
-   <button class="btn" type="button" id="backupButton">دریافت فایل پشتیبان</button>
-   <button class="btn secondary" type="button" id="restoreButton">بازیابی اطلاعات</button>
-   <input type="file" id="restoreFile" accept=".json,application/json" class="hidden">
-  </div>
-  <p class="muted" id="backupMessage"></p>
- </div>
-
- <div class="panel">
-  <h2>پاک‌سازی اطلاعات</h2>
-  <p class="muted">این گزینه تمام پروژه‌ها، مشتریان و خدمات ثبت‌شده را حذف می‌کند.</p>
-  <div class="actions"><button class="btn danger" id="resetData" type="button">حذف تمام اطلاعات</button></div>
- </div>
+<div class="panel">
+<h2>تنظیمات پنل</h2>
+<div class="activity"><span>نسخه پنل</span><strong>۵.۰</strong></div>
+<div class="activity"><span>وضعیت ذخیره‌سازی</span><strong class="green">فعال در مرورگر</strong></div>
+<div class="activity"><span>وضعیت ورود</span><strong>مدیر</strong></div>
+</div>
+<div class="panel">
+<h2>پشتیبان‌گیری و بازیابی اطلاعات</h2>
+<p class="muted">از پروژه‌ها، مشتریان، خدمات و محتوای سایت پشتیبان تهیه کنید.</p>
+<div class="actions">
+<button class="btn" id="backupButton" type="button">دریافت فایل پشتیبان</button>
+<button class="btn secondary" id="restoreButton" type="button">بازیابی اطلاعات</button>
+<input type="file" id="restoreFile" accept=".json,application/json" class="hidden">
+</div>
+<p class="muted" id="backupMessage"></p>
+</div>
+<div class="panel">
+<h2>پاک‌سازی اطلاعات</h2>
+<p class="muted">این گزینه تمام اطلاعات پنل را حذف می‌کند.</p>
+<button class="btn danger" id="resetData" type="button">حذف تمام اطلاعات</button>
+</div>
 </section>
 
 <div class="footer">VIRA TECH © 2026 — تمام حقوق محفوظ است.</div>
@@ -254,338 +290,216 @@ h1{font-size:20px}
 
 <script>
 "use strict";
-
 const $=id=>document.getElementById(id);
-
 const defaultServices=[
- {id:1,name:"VIRA WEB",description:"طراحی وب‌سایت",active:true},
- {id:2,name:"VIRA ECOMMERCE",description:"فروشگاه اینترنتی",active:true},
- {id:3,name:"VIRA MANAGEMENT",description:"سیستم مدیریت",active:true},
- {id:4,name:"VIRA SOFTWARE",description:"نرم‌افزارهای کاربردی",active:true},
- {id:5,name:"VIRA AI",description:"ابزارهای هوش مصنوعی",active:true},
- {id:6,name:"VIRA TOOLS",description:"ابزارهای دیجیتال",active:true}
+{id:1,name:"VIRA WEB",description:"طراحی وب‌سایت",active:true},
+{id:2,name:"VIRA ECOMMERCE",description:"فروشگاه اینترنتی",active:true},
+{id:3,name:"VIRA MANAGEMENT",description:"سیستم مدیریت",active:true},
+{id:4,name:"VIRA SOFTWARE",description:"نرم‌افزارهای کاربردی",active:true},
+{id:5,name:"VIRA AI",description:"ابزارهای هوش مصنوعی",active:true},
+{id:6,name:"VIRA TOOLS",description:"ابزارهای دیجیتال",active:true}
 ];
-
+const defaultContent={
+siteTitle:"طراحی دیجیتال، فراتر از انتظار",
+siteDescription:"ما در VIRA TECH راهکارهای دیجیتال مدرن برای رشد کسب‌وکار شما ارائه می‌دهیم.",
+aboutTitle:"درباره VIRA TECH",
+aboutDescription:"VIRA TECH یک مجموعه فعال در زمینه طراحی وب‌سایت، فروشگاه اینترنتی و ابزارهای دیجیتال است.",
+buttonText:"شروع همکاری",
+sitePhone:"989058434159",
+siteEmail:"albwhmwdj@gmail.com"
+};
 function load(key,fallback){
- try{
-  const value=JSON.parse(localStorage.getItem(key));
-  return Array.isArray(value)?value:fallback.map?fallback.map(x=>({...x})):fallback;
- }catch(e){
-  return fallback.map?fallback.map(x=>({...x})):fallback;
- }
+try{const v=JSON.parse(localStorage.getItem(key));return v===null?fallback:v;}
+catch(e){return fallback;}
 }
-
 let projects=load("vira_projects",[]);
 let customers=load("vira_customers",[]);
-let services=load("vira_services",defaultServices);
+let services=load("vira_services",defaultServices.map(x=>({...x})));
+let content=load("vira_site_content",{...defaultContent});
+let portfolio=load("vira_portfolio",[]);
 let editProject=null,editCustomer=null,editService=null;
-
 function save(){
- localStorage.setItem("vira_projects",JSON.stringify(projects));
- localStorage.setItem("vira_customers",JSON.stringify(customers));
- localStorage.setItem("vira_services",JSON.stringify(services));
+localStorage.setItem("vira_projects",JSON.stringify(projects));
+localStorage.setItem("vira_customers",JSON.stringify(customers));
+localStorage.setItem("vira_services",JSON.stringify(services));
+localStorage.setItem("vira_site_content",JSON.stringify(content));
+localStorage.setItem("vira_portfolio",JSON.stringify(portfolio));
 }
-
-function safe(value){
- return String(value??"").replace(/[&<>"']/g,c=>({
- "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
- }[c]));
-}
-
+function safe(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 const fa=n=>Number(n).toLocaleString("fa-IR");
 const statusText={wait:"در انتظار",progress:"در حال انجام",done:"تکمیل‌شده"};
 
-/* ورود آزمایشی */
-function showLogin(){
- document.body.classList.remove("logged-in");
- sessionStorage.removeItem("vira_admin_login");
-}
 function showDashboard(){
- document.body.classList.add("logged-in");
- sessionStorage.setItem("vira_admin_login","yes");
- renderAll();
+document.body.classList.add("logged-in");
+sessionStorage.setItem("vira_admin_login","yes");
+renderAll();
+}
+function showLogin(){
+document.body.classList.remove("logged-in");
+sessionStorage.removeItem("vira_admin_login");
 }
 $("loginForm").addEventListener("submit",e=>{
- e.preventDefault();
- const user=$("username").value.trim();
- const pass=$("password").value;
- if(user==="admin" && pass==="Vira@2026"){
-  $("loginError").textContent="";
-  showDashboard();
- }else{
-  $("loginError").textContent="نام کاربری یا رمز عبور اشتباه است.";
- }
+e.preventDefault();
+if($("username").value.trim()==="admin" && $("password").value==="Vira@2026"){
+$("loginError").textContent="";
+showDashboard();
+}else $("loginError").textContent="نام کاربری یا رمز عبور اشتباه است.";
 });
-$("logout").onclick=()=>{
- showLogin();
- $("loginForm").reset();
-};
-if(sessionStorage.getItem("vira_admin_login")==="yes"){
- document.body.classList.add("logged-in");
-}
+$("logout").onclick=()=>{showLogin();$("loginForm").reset();};
+if(sessionStorage.getItem("vira_admin_login")==="yes")document.body.classList.add("logged-in");
 
-/* منو */
 document.querySelectorAll(".nav button").forEach(btn=>{
- btn.addEventListener("click",()=>{
-  document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
-  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-  btn.classList.add("active");
-  $(btn.dataset.page).classList.add("active");
-  $("pageTitle").textContent=btn.textContent.replace(/^[^\s]+\s/,"");
- });
+btn.addEventListener("click",()=>{
+document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
+document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+btn.classList.add("active");
+$(btn.dataset.page).classList.add("active");
+$("pageTitle").textContent=btn.textContent.replace(/^[^\s]+\s/,"");
+});
 });
 
-/* داشبورد */
 function updateDashboard(){
- $("totalProjects").textContent=fa(projects.length);
- $("totalCustomers").textContent=fa(customers.length);
- $("totalServices").textContent=fa(services.filter(s=>s.active).length);
- $("progressCount").textContent=fa(projects.filter(p=>p.status==="progress").length);
- $("doneCount").textContent=fa(projects.filter(p=>p.status==="done").length);
- $("waitCount").textContent=fa(projects.filter(p=>p.status==="wait").length);
- const recent=projects.slice(-5).reverse();
- $("recentProjects").innerHTML=recent.length?recent.map(p=>
- `<div class="activity"><span>${safe(p.name)}</span><span>${statusText[p.status]||"نامشخص"}</span></div>`
- ).join(""):"هنوز پروژه‌ای ثبت نشده است.";
+$("totalProjects").textContent=fa(projects.length);
+$("totalCustomers").textContent=fa(customers.length);
+$("totalServices").textContent=fa(services.filter(s=>s.active).length);
+$("progressCount").textContent=fa(projects.filter(p=>p.status==="progress").length);
+$("doneCount").textContent=fa(projects.filter(p=>p.status==="done").length);
+$("waitCount").textContent=fa(projects.filter(p=>p.status==="wait").length);
+$("recentProjects").innerHTML=projects.length?projects.slice(-5).reverse().map(p=>`<div class="activity"><span>${safe(p.name)}</span><span>${statusText[p.status]||"نامشخص"}</span></div>`).join(""):"هنوز پروژه‌ای ثبت نشده است.";
 }
-
-/* پروژه‌ها */
 function renderProjects(){
- $("projectRows").innerHTML=projects.length?projects.map(p=>`
- <tr>
- <td>${safe(p.name)}</td><td>${safe(p.customer||"—")}</td>
- <td><span class="status ${safe(p.status)}">${statusText[p.status]||"نامشخص"}</span></td>
- <td>${safe(p.date||"—")}</td>
- <td>
- <button class="btn small secondary" onclick="editProjectItem(${Number(p.id)})">ویرایش</button>
- <button class="btn small danger" onclick="deleteProject(${Number(p.id)})">حذف</button>
- </td></tr>`).join(""):'<tr><td colspan="5" class="empty">پروژه‌ای ثبت نشده است.</td></tr>';
+$("projectRows").innerHTML=projects.length?projects.map(p=>`<tr><td>${safe(p.name)}</td><td>${safe(p.customer||"—")}</td><td><span class="status ${safe(p.status)}">${statusText[p.status]||"نامشخص"}</span></td><td>${safe(p.date||"—")}</td><td><button class="btn small secondary" onclick="editProjectItem(${Number(p.id)})">ویرایش</button> <button class="btn small danger" onclick="deleteProject(${Number(p.id)})">حذف</button></td></tr>`).join(""):'<tr><td colspan="5" class="empty">پروژه‌ای ثبت نشده است.</td></tr>';
 }
-$("projectForm").addEventListener("submit",e=>{
- e.preventDefault();
- const item={
- id:editProject??Date.now(),
- name:$("projectName").value.trim(),
- customer:$("projectCustomer").value.trim(),
- status:$("projectStatus").value,
- date:$("projectDate").value
- };
- if(editProject!==null)projects=projects.map(p=>p.id===editProject?item:p);
- else projects.push(item);
- save();resetProjectForm();renderAll();
-});
+$("projectForm").onsubmit=e=>{
+e.preventDefault();
+const item={id:editProject??Date.now(),name:$("projectName").value.trim(),customer:$("projectCustomer").value.trim(),status:$("projectStatus").value,date:$("projectDate").value};
+if(editProject!==null)projects=projects.map(p=>p.id===editProject?item:p);else projects.push(item);
+save();resetProjectForm();renderAll();
+};
 function editProjectItem(id){
- const p=projects.find(x=>x.id===id);if(!p)return;
- editProject=id;
- $("projectName").value=p.name;
- $("projectCustomer").value=p.customer||"";
- $("projectStatus").value=p.status;
- $("projectDate").value=p.date||"";
- $("projectSubmit").textContent="ذخیره تغییرات";
- $("cancelProject").classList.remove("hidden");
+const p=projects.find(x=>x.id===id);if(!p)return;
+editProject=id;$("projectName").value=p.name;$("projectCustomer").value=p.customer||"";$("projectStatus").value=p.status;$("projectDate").value=p.date||"";
+$("projectSubmit").textContent="ذخیره تغییرات";$("cancelProject").classList.remove("hidden");
 }
-function deleteProject(id){
- if(!confirm("این پروژه حذف شود؟"))return;
- projects=projects.filter(p=>p.id!==id);save();renderAll();
-}
-function resetProjectForm(){
- $("projectForm").reset();editProject=null;
- $("projectSubmit").textContent="ثبت پروژه";
- $("cancelProject").classList.add("hidden");
-}
+function deleteProject(id){if(!confirm("این پروژه حذف شود؟"))return;projects=projects.filter(p=>p.id!==id);save();renderAll();}
+function resetProjectForm(){$("projectForm").reset();editProject=null;$("projectSubmit").textContent="ثبت پروژه";$("cancelProject").classList.add("hidden");}
 $("cancelProject").onclick=resetProjectForm;
 
-/* مشتریان */
 function renderCustomers(){
- $("customerRows").innerHTML=customers.length?customers.map(c=>`
- <tr><td>${safe(c.name)}</td><td>${safe(c.phone||"—")}</td>
- <td>${safe(c.email||"—")}</td><td>
- <button class="btn small secondary" onclick="editCustomerItem(${Number(c.id)})">ویرایش</button>
- <button class="btn small danger" onclick="deleteCustomer(${Number(c.id)})">حذف</button>
- </td></tr>`).join(""):'<tr><td colspan="4" class="empty">مشتری‌ای ثبت نشده است.</td></tr>';
+$("customerRows").innerHTML=customers.length?customers.map(c=>`<tr><td>${safe(c.name)}</td><td>${safe(c.phone||"—")}</td><td>${safe(c.email||"—")}</td><td><button class="btn small secondary" onclick="editCustomerItem(${Number(c.id)})">ویرایش</button> <button class="btn small danger" onclick="deleteCustomer(${Number(c.id)})">حذف</button></td></tr>`).join(""):'<tr><td colspan="4" class="empty">مشتری‌ای ثبت نشده است.</td></tr>';
 }
-$("customerForm").addEventListener("submit",e=>{
- e.preventDefault();
- const item={
- id:editCustomer??Date.now(),
- name:$("customerName").value.trim(),
- phone:$("customerPhone").value.trim(),
- email:$("customerEmail").value.trim()
- };
- if(editCustomer!==null)customers=customers.map(c=>c.id===editCustomer?item:c);
- else customers.push(item);
- save();resetCustomerForm();renderAll();
-});
+$("customerForm").onsubmit=e=>{
+e.preventDefault();
+const item={id:editCustomer??Date.now(),name:$("customerName").value.trim(),phone:$("customerPhone").value.trim(),email:$("customerEmail").value.trim()};
+if(editCustomer!==null)customers=customers.map(c=>c.id===editCustomer?item:c);else customers.push(item);
+save();resetCustomerForm();renderAll();
+};
 function editCustomerItem(id){
- const c=customers.find(x=>x.id===id);if(!c)return;
- editCustomer=id;
- $("customerName").value=c.name;
- $("customerPhone").value=c.phone||"";
- $("customerEmail").value=c.email||"";
- $("customerSubmit").textContent="ذخیره تغییرات";
- $("cancelCustomer").classList.remove("hidden");
+const c=customers.find(x=>x.id===id);if(!c)return;
+editCustomer=id;$("customerName").value=c.name;$("customerPhone").value=c.phone||"";$("customerEmail").value=c.email||"";
+$("customerSubmit").textContent="ذخیره تغییرات";$("cancelCustomer").classList.remove("hidden");
 }
-function deleteCustomer(id){
- if(!confirm("این مشتری حذف شود؟"))return;
- customers=customers.filter(c=>c.id!==id);save();renderAll();
-}
-function resetCustomerForm(){
- $("customerForm").reset();editCustomer=null;
- $("customerSubmit").textContent="ثبت مشتری";
- $("cancelCustomer").classList.add("hidden");
-}
+function deleteCustomer(id){if(!confirm("این مشتری حذف شود؟"))return;customers=customers.filter(c=>c.id!==id);save();renderAll();}
+function resetCustomerForm(){$("customerForm").reset();editCustomer=null;$("customerSubmit").textContent="ثبت مشتری";$("cancelCustomer").classList.add("hidden");}
 $("cancelCustomer").onclick=resetCustomerForm;
 
-/* خدمات */
 function renderServices(){
- $("serviceRows").innerHTML=services.length?services.map(s=>`
- <div class="service-item">
- <div><strong>${safe(s.name)}</strong>
- <div class="muted">${safe(s.description||"بدون توضیحات")}</div>
- <span class="muted">${s.active?"فعال":"غیرفعال"}</span></div>
- <div class="actions">
- <button class="btn small secondary" onclick="toggleService(${Number(s.id)})">${s.active?"غیرفعال‌کردن":"فعال‌کردن"}</button>
- <button class="btn small secondary" onclick="editServiceItem(${Number(s.id)})">ویرایش</button>
- <button class="btn small danger" onclick="deleteService(${Number(s.id)})">حذف</button>
- </div></div>`).join(""):'<div class="empty">خدمتی ثبت نشده است.</div>';
+$("serviceRows").innerHTML=services.length?services.map(s=>`<div class="service-item"><div><strong>${safe(s.name)}</strong><div class="muted">${safe(s.description||"بدون توضیحات")}</div><span class="muted">${s.active?"فعال":"غیرفعال"}</span></div><div class="actions"><button class="btn small secondary" onclick="toggleService(${Number(s.id)})">${s.active?"غیرفعال‌کردن":"فعال‌کردن"}</button> <button class="btn small secondary" onclick="editServiceItem(${Number(s.id)})">ویرایش</button> <button class="btn small danger" onclick="deleteService(${Number(s.id)})">حذف</button></div></div>`).join(""):'<div class="empty">خدمتی ثبت نشده است.</div>';
 }
-$("serviceForm").addEventListener("submit",e=>{
- e.preventDefault();
- const old=services.find(s=>s.id===editService);
- const item={
- id:editService??Date.now(),
- name:$("serviceName").value.trim(),
- description:$("serviceDescription").value.trim(),
- active:old?old.active:true
- };
- if(editService!==null)services=services.map(s=>s.id===editService?item:s);
- else services.push(item);
- save();resetServiceForm();renderAll();
-});
+$("serviceForm").onsubmit=e=>{
+e.preventDefault();
+const old=services.find(s=>s.id===editService);
+const item={id:editService??Date.now(),name:$("serviceName").value.trim(),description:$("serviceDescription").value.trim(),active:old?old.active:true};
+if(editService!==null)services=services.map(s=>s.id===editService?item:s);else services.push(item);
+save();resetServiceForm();renderAll();
+};
 function editServiceItem(id){
- const s=services.find(x=>x.id===id);if(!s)return;
- editService=id;
- $("serviceName").value=s.name;
- $("serviceDescription").value=s.description||"";
- $("serviceSubmit").textContent="ذخیره تغییرات";
- $("cancelService").classList.remove("hidden");
+const s=services.find(x=>x.id===id);if(!s)return;
+editService=id;$("serviceName").value=s.name;$("serviceDescription").value=s.description||"";
+$("serviceSubmit").textContent="ذخیره تغییرات";$("cancelService").classList.remove("hidden");
 }
-function toggleService(id){
- services=services.map(s=>s.id===id?{...s,active:!s.active}:s);
- save();renderAll();
-}
-function deleteService(id){
- if(!confirm("این خدمت حذف شود؟"))return;
- services=services.filter(s=>s.id!==id);save();renderAll();
-}
-function resetServiceForm(){
- $("serviceForm").reset();editService=null;
- $("serviceSubmit").textContent="افزودن خدمت";
- $("cancelService").classList.add("hidden");
-}
+function toggleService(id){services=services.map(s=>s.id===id?{...s,active:!s.active}:s);save();renderAll();}
+function deleteService(id){if(!confirm("این خدمت حذف شود؟"))return;services=services.filter(s=>s.id!==id);save();renderAll();}
+function resetServiceForm(){$("serviceForm").reset();editService=null;$("serviceSubmit").textContent="افزودن خدمت";$("cancelService").classList.add("hidden");}
 $("cancelService").onclick=resetServiceForm;
 
-/* پشتیبان‌گیری */
-$("backupButton").addEventListener("click",()=>{
- try{
-  const backup={
-   app:"VIRA TECH",
-   version:"4.0",
-   date:new Date().toISOString(),
-   projects:projects,
-   customers:customers,
-   services:services
-  };
+/* محتوای سایت */
+function renderContent(){
+$("siteTitle").value=content.siteTitle||"";
+$("siteDescription").value=content.siteDescription||"";
+$("aboutTitle").value=content.aboutTitle||"";
+$("aboutDescription").value=content.aboutDescription||"";
+$("buttonText").value=content.buttonText||"";
+$("sitePhone").value=content.sitePhone||"";
+$("siteEmail").value=content.siteEmail||"";
+renderPortfolio();
+}
+$("contentForm").onsubmit=e=>{
+e.preventDefault();
+content={
+siteTitle:$("siteTitle").value.trim(),
+siteDescription:$("siteDescription").value.trim(),
+aboutTitle:$("aboutTitle").value.trim(),
+aboutDescription:$("aboutDescription").value.trim(),
+buttonText:$("buttonText").value.trim(),
+sitePhone:$("sitePhone").value.trim(),
+siteEmail:$("siteEmail").value.trim()
+};
+save();
+$("contentMessage").textContent="محتوای سایت در مرورگر ذخیره شد. برای انتشار فایل خروجی را دریافت کن.";
+alert("محتوای سایت ذخیره شد.");
+};
+function renderPortfolio(){
+$("portfolioRows").innerHTML=portfolio.length?portfolio.map(p=>`<div class="service-item"><div><strong>${safe(p.name)}</strong><div class="muted">${safe(p.description||"بدون توضیحات")}</div><div class="muted">${safe(p.link||"بدون لینک")}</div></div><button class="btn small danger" onclick="deletePortfolio(${Number(p.id)})">حذف</button></div>`).join(""):'<div class="empty">هنوز نمونه‌کاری اضافه نشده است.</div>';
+}
+$("portfolioForm").onsubmit=e=>{
+e.preventDefault();
+portfolio.push({id:Date.now(),name:$("portfolioName").value.trim(),link:$("portfolioLink").value.trim(),description:$("portfolioDescription").value.trim()});
+save();$("portfolioForm").reset();renderPortfolio();
+};
+function deletePortfolio(id){if(!confirm("این نمونه‌کار حذف شود؟"))return;portfolio=portfolio.filter(p=>p.id!==id);save();renderPortfolio();}
 
-  const blob=new Blob(
-   [JSON.stringify(backup,null,2)],
-   {type:"application/json"}
-  );
-
-  const url=URL.createObjectURL(blob);
-  const link=document.createElement("a");
-  link.href=url;
-  link.download="VIRA-TECH-Backup.json";
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-  URL.revokeObjectURL(url);
-
-  $("backupMessage").textContent="فایل پشتیبان آماده شد.";
- }catch(error){
-  alert("ساخت فایل پشتیبان انجام نشد.");
- }
-});
-
-/* بازیابی */
-$("restoreButton").addEventListener("click",()=>{
- $("restoreFile").click();
-});
-
-$("restoreFile").addEventListener("change",event=>{
- const file=event.target.files[0];
- if(!file)return;
-
- const reader=new FileReader();
-
- reader.onload=()=>{
-  try{
-   const data=JSON.parse(reader.result);
-
-   if(
-    data.app!=="VIRA TECH"||
-    !Array.isArray(data.projects)||
-    !Array.isArray(data.customers)||
-    !Array.isArray(data.services)
-   ){
-    throw new Error("Invalid backup");
-   }
-
-   if(!confirm("اطلاعات فعلی با اطلاعات فایل پشتیبان جایگزین شوند؟")){
-    event.target.value="";
-    return;
-   }
-
-   projects=data.projects;
-   customers=data.customers;
-   services=data.services;
-
-   save();
-   renderAll();
-
-   $("backupMessage").textContent="اطلاعات با موفقیت بازیابی شدند.";
-   alert("بازیابی اطلاعات انجام شد.");
-
-  }catch(error){
-   alert("فایل پشتیبان معتبر نیست یا ساختار آن صحیح نیست.");
-  }
-
-  event.target.value="";
- };
-
- reader.onerror=()=>{
-  alert("خواندن فایل با مشکل مواجه شد.");
-  event.target.value="";
- };
-
- reader.readAsText(file);
-});
-
-/* تنظیمات */
-$("resetData").onclick=()=>{
- if(!confirm("تمام پروژه‌ها، مشتریان و خدمات حذف شوند؟"))return;
- projects=[];customers=[];
- services=defaultServices.map(s=>({...s}));
- save();renderAll();alert("اطلاعات پاک‌سازی شد.");
+function downloadJSON(data,filename){
+const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json;charset=utf-8"});
+const url=URL.createObjectURL(blob);
+const a=document.createElement("a");
+a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();
+setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+$("exportContent").onclick=()=>{
+downloadJSON({app:"VIRA TECH",content:content,portfolio:portfolio,services:services.filter(s=>s.active)},"site-content.json");
+$("contentMessage").textContent="فایل site-content.json دانلود شد. آن را در پوشه اصلی مخزن GitHub قرار بده.";
 };
 
-function renderAll(){
- renderProjects();
- renderCustomers();
- renderServices();
- updateDashboard();
-}
+/* پشتیبان‌گیری کامل */
+$("backupButton").onclick=()=>{
+downloadJSON({app:"VIRA TECH",version:"5.0",date:new Date().toISOString(),projects,customers,services,content,portfolio},"VIRA-TECH-Backup.json");
+$("backupMessage").textContent="فایل پشتیبان دانلود شد.";
+};
+$("restoreButton").onclick=()=>$("restoreFile").click();
+$("restoreFile").onchange=e=>{
+const file=e.target.files[0];if(!file)return;
+const reader=new FileReader();
+reader.onload=()=>{
+try{
+const d=JSON.parse(reader.result);
+if(d.app!=="VIRA TECH"||!Array.isArray(d.projects)||!Array.isArray(d.customers)||!Array.isArray(d.services))throw Error();
+if(!confirm("اطلاعات فعلی با فایل پشتیبان جایگزین شود؟"))return;
+projects=d.projects;customers=d.customers;services=d.services;
+content=d.content||{...defaultContent};portfolio=Array.isArray(d.portfolio)?d.portfolio:[];
+save();renderAll();alert("بازیابی اطلاعات انجام شد.");
+}catch(err){alert("فایل پشتیبان معتبر نیست.");}
+finally{e.target.value="";}
+};
+reader.readAsText(file);
+};
+$("resetData").onclick=()=>{
+if(!confirm("تمام پروژه‌ها، مشتریان، خدمات و محتوای سایت حذف شوند؟"))return;
+projects=[];customers=[];services=defaultServices.map(x=>({...x}));content={...defaultContent};portfolio=[];
+save();renderAll();alert("اطلاعات پاک‌سازی شد.");
+};
 
+function renderAll(){renderProjects();renderCustomers();renderServices();updateDashboard();renderContent();}
 save();
 renderAll();
 </script>
