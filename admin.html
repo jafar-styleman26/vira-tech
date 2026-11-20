@@ -2,133 +2,387 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>پنل مدیریت | VIRA TECH</title>
-  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: Vazirmatn, sans-serif;
-      background: #080b18;
-      color: #f4f5ff;
-      min-height: 100vh;
-    }
-    .layout { display: flex; min-height: 100vh; }
-    aside {
-      width: 250px;
-      background: #101529;
-      border-left: 1px solid #252c46;
-      padding: 28px 18px;
-      flex-shrink: 0;
-    }
-    .logo { font-size: 25px; font-weight: 800; color: #9a83ff; margin-bottom: 8px; }
-    .subtitle { color: #8991ad; font-size: 12px; margin-bottom: 38px; }
-    .menu-title { color: #737d9d; font-size: 12px; margin: 20px 10px 12px; }
-    .menu a {
-      display: block; text-decoration: none; color: #c4c9dc;
-      padding: 13px 14px; border-radius: 10px; margin-bottom: 7px;
-      font-size: 14px; transition: .2s;
-    }
-    .menu a.active, .menu a:hover { background: #29264d; color: #b7a6ff; }
-    main { flex: 1; padding: 35px; min-width: 0; }
-    .topbar { display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 35px; }
-    h1 { font-size: 25px; }
-    .welcome { color: #8991ad; font-size: 13px; margin-top: 7px; }
-    .admin { background: #171e35; padding: 10px 16px; border-radius: 12px; font-size: 13px; }
-    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 28px; }
-    .card, .panel { background: #11182c; border: 1px solid #252d49; border-radius: 16px; padding: 22px; }
-    .card-label { color: #9ba4c0; font-size: 13px; }
-    .number { font-size: 30px; font-weight: 800; margin-top: 12px; }
-    .purple { color: #a18aff; }
-    .blue { color: #59aaff; }
-    .green { color: #55d6a0; }
-    .panel h2 { font-size: 17px; margin-bottom: 20px; }
-    .activity { display: flex; justify-content: space-between; gap: 12px; padding: 15px 0; border-bottom: 1px solid #252d49; font-size: 13px; }
-    .activity:last-child { border: 0; }
-    .status { color: #55d6a0; }
-    .note { color: #8991ad; font-size: 12px; margin-top: 22px; }
-    @media(max-width: 850px) {
-      aside { width: 205px; }
-      main { padding: 24px; }
-      .cards { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media(max-width: 600px) {
-      .layout { display: block; }
-      aside { width: 100%; padding: 18px; }
-      .subtitle { margin-bottom: 15px; }
-      .menu { display: flex; gap: 7px; overflow-x: auto; }
-      .menu-title { display: none; }
-      .menu a { white-space: nowrap; margin: 0; padding: 10px; }
-      main { padding: 20px 15px; }
-      .cards { grid-template-columns: 1fr; }
-      .topbar { align-items: flex-start; }
-      h1 { font-size: 21px; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>مدیریت VIRA TECH</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#080b18;color:#f4f5ff;font-family:Vazirmatn,sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.layout{display:flex;min-height:100vh}
+aside{width:245px;background:#101529;border-left:1px solid #252c46;padding:25px 17px;flex-shrink:0}
+.logo{font-size:25px;font-weight:800;color:#a18aff}
+.sub{font-size:12px;color:#8991ad;margin:5px 0 30px}
+.menu-title{font-size:12px;color:#737d9d;margin:20px 10px 10px}
+.nav button{display:block;width:100%;text-align:right;border:0;background:transparent;color:#c4c9dc;padding:13px;border-radius:10px;margin:4px 0}
+.nav button:hover,.nav button.active{background:#29264d;color:#b7a6ff}
+main{flex:1;min-width:0;padding:30px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:28px}
+h1{font-size:24px;margin:0}
+.welcome{color:#8991ad;font-size:13px;margin-top:6px}
+.admin{background:#171e35;padding:10px 15px;border-radius:10px;font-size:13px}
+.page{display:none}
+.page.active{display:block}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-bottom:22px}
+.card,.panel{background:#11182c;border:1px solid #252d49;border-radius:15px;padding:20px}
+.card-label{color:#9ba4c0;font-size:13px}
+.number{font-size:29px;font-weight:800;margin-top:9px}
+.purple{color:#a18aff}.blue{color:#59aaff}.green{color:#55d6a0}
+.panel{margin-bottom:20px}
+.panel h2{font-size:17px;margin:0 0 18px}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:17px}
+.btn{border:0;border-radius:9px;padding:10px 16px;background:#795bea;color:white}
+.btn:hover{opacity:.88}
+.btn.secondary{background:#252d49;color:#dce0f4}
+.btn.danger{background:#702d40}
+.btn.small{padding:6px 10px;font-size:12px}
+.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}
+.field{display:flex;flex-direction:column;gap:7px}
+.field.full{grid-column:1/-1}
+label{font-size:13px;color:#aeb6d0}
+input,select,textarea{width:100%;padding:11px 12px;border:1px solid #303957;background:#0b1123;color:white;border-radius:9px;outline:none}
+input:focus,select:focus,textarea:focus{border-color:#9278ff}
+textarea{resize:vertical;min-height:80px}
+.actions{display:flex;gap:8px;margin-top:15px;flex-wrap:wrap}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:600px}
+th,td{padding:13px 10px;text-align:right;border-bottom:1px solid #252d49;font-size:13px}
+th{color:#9da8c7;font-weight:600}
+td{color:#e0e4f5}
+.status{padding:5px 9px;border-radius:20px;font-size:11px;background:#252d49}
+.status.done{background:#153b32;color:#62dfaa}
+.status.progress{background:#30294f;color:#c0aaff}
+.status.wait{background:#49351f;color:#ffcc7c}
+.empty{text-align:center;color:#8991ad;padding:25px}
+.activity{display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid #252d49;font-size:13px}
+.activity:last-child{border:0}
+.service-item{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:15px 0;border-bottom:1px solid #252d49}
+.service-item:last-child{border:0}
+.muted{color:#8991ad;font-size:12px}
+.footer{color:#727d9b;font-size:12px;margin-top:25px}
+.hidden{display:none!important}
+@media(max-width:800px){
+.layout{display:block}
+aside{width:100%;padding:17px}
+.sub{margin-bottom:12px}
+.menu{display:flex;overflow-x:auto;gap:5px}
+.menu-title{display:none}
+.nav button{white-space:nowrap;width:auto;margin:0;padding:10px}
+main{padding:20px 14px}
+}
+@media(max-width:550px){
+.cards{grid-template-columns:1fr}
+.form-grid{grid-template-columns:1fr}
+.field.full{grid-column:auto}
+.top{align-items:flex-start}
+h1{font-size:20px}
+}
+</style>
 </head>
 <body>
-  <div class="layout">
-    <aside>
-      <div class="logo">VIRA TECH</div>
-      <div class="subtitle">پنل مدیریت اختصاصی</div>
-      <div class="menu-title">منوی اصلی</div>
-      <nav class="menu">
-        <a href="#dashboard" class="active">داشبورد</a>
-        <a href="#projects">پروژه‌ها</a>
-        <a href="#customers">مشتریان</a>
-        <a href="#services">خدمات</a>
-        <a href="#settings">تنظیمات</a>
-      </nav>
-    </aside>
+<div class="layout">
+<aside>
+  <div class="logo">VIRA TECH</div>
+  <div class="sub">پنل مدیریت اختصاصی</div>
+  <div class="menu-title">منوی اصلی</div>
+  <nav class="nav menu">
+    <button class="active" data-page="dashboard">◈ داشبورد</button>
+    <button data-page="projects">▣ پروژه‌ها</button>
+    <button data-page="customers">♙ مشتریان</button>
+    <button data-page="services">✦ خدمات</button>
+    <button data-page="settings">⚙ تنظیمات</button>
+  </nav>
+</aside>
 
-    <main id="dashboard">
-      <div class="topbar">
-        <div>
-          <h1>داشبورد مدیریت</h1>
-          <p class="welcome">به پنل مدیریت VIRA TECH خوش آمدید.</p>
-        </div>
-        <div class="admin">مدیر سیستم</div>
-      </div>
-
-      <section class="cards">
-        <div class="card">
-          <div class="card-label">کل پروژه‌ها</div>
-          <div class="number purple">۰</div>
-        </div>
-        <div class="card">
-          <div class="card-label">کل مشتریان</div>
-          <div class="number blue">۰</div>
-        </div>
-        <div class="card">
-          <div class="card-label">خدمات فعال</div>
-          <div class="number green">۶</div>
-        </div>
-      </section>
-
-      <section class="panel" id="projects">
-        <h2>وضعیت پروژه‌ها</h2>
-        <div class="activity">
-          <span>پروژه‌های در حال انجام</span>
-          <span class="status">۰ پروژه</span>
-        </div>
-        <div class="activity" id="customers">
-          <span>مشتریان ثبت‌شده</span>
-          <span>۰ مشتری</span>
-        </div>
-        <div class="activity" id="services">
-          <span>خدمات VIRA TECH</span>
-          <span class="status">۶ خدمت فعال</span>
-        </div>
-      </section>
-
-      <section class="panel" id="settings" style="margin-top:22px">
-        <h2>تنظیمات پنل</h2>
-        <p style="color:#aab1ca;font-size:13px">این نسخه اولیه داشبورد است. امکانات مدیریت اطلاعات را در مراحل بعد اضافه می‌کنیم.</p>
-      </section>
-
-      <p class="note">VIRA TECH © 2026 — تمام حقوق محفوظ است.</p>
-    </main>
+<main>
+<div class="top">
+  <div>
+    <h1 id="pageTitle">داشبورد مدیریت</h1>
+    <div class="welcome">به پنل مدیریت VIRA TECH خوش آمدید.</div>
   </div>
+  <div class="admin">مدیر سیستم</div>
+</div>
+
+<!-- داشبورد -->
+<section class="page active" id="dashboard">
+  <div class="cards">
+    <div class="card"><div class="card-label">کل پروژه‌ها</div><div class="number purple" id="totalProjects">۰</div></div>
+    <div class="card"><div class="card-label">کل مشتریان</div><div class="number blue" id="totalCustomers">۰</div></div>
+    <div class="card"><div class="card-label">خدمات فعال</div><div class="number green" id="totalServices">۶</div></div>
+  </div>
+  <div class="panel">
+    <h2>وضعیت پروژه‌ها</h2>
+    <div class="activity"><span>پروژه‌های در حال انجام</span><strong id="progressCount">۰</strong></div>
+    <div class="activity"><span>پروژه‌های تکمیل‌شده</span><strong id="doneCount">۰</strong></div>
+    <div class="activity"><span>پروژه‌های در انتظار</span><strong id="waitCount">۰</strong></div>
+  </div>
+  <div class="panel">
+    <h2>آخرین پروژه‌ها</h2>
+    <div id="recentProjects" class="muted">هنوز پروژه‌ای ثبت نشده است.</div>
+  </div>
+</section>
+
+<!-- پروژه‌ها -->
+<section class="page" id="projects">
+  <div class="panel">
+    <div class="toolbar"><h2>ثبت پروژه جدید</h2></div>
+    <form id="projectForm">
+      <div class="form-grid">
+        <div class="field"><label>نام پروژه</label><input id="projectName" required placeholder="مثلاً طراحی فروشگاه اینترنتی"></div>
+        <div class="field"><label>نام مشتری</label><input id="projectCustomer" placeholder="نام مشتری"></div>
+        <div class="field"><label>وضعیت پروژه</label>
+          <select id="projectStatus">
+            <option value="wait">در انتظار</option>
+            <option value="progress">در حال انجام</option>
+            <option value="done">تکمیل‌شده</option>
+          </select>
+        </div>
+        <div class="field"><label>تاریخ ثبت</label><input id="projectDate" type="date"></div>
+      </div>
+      <div class="actions">
+        <button class="btn" type="submit" id="projectSubmit">ثبت پروژه</button>
+        <button class="btn secondary hidden" type="button" id="cancelProject">لغو ویرایش</button>
+      </div>
+    </form>
+  </div>
+  <div class="panel">
+    <h2>فهرست پروژه‌ها</h2>
+    <div class="table-wrap">
+      <table><thead><tr><th>نام پروژه</th><th>مشتری</th><th>وضعیت</th><th>تاریخ</th><th>عملیات</th></tr></thead>
+      <tbody id="projectRows"></tbody></table>
+    </div>
+  </div>
+</section>
+
+<!-- مشتریان -->
+<section class="page" id="customers">
+  <div class="panel">
+    <h2>ثبت مشتری جدید</h2>
+    <form id="customerForm">
+      <div class="form-grid">
+        <div class="field"><label>نام مشتری</label><input id="customerName" required placeholder="نام و نام خانوادگی"></div>
+        <div class="field"><label>شماره تماس</label><input id="customerPhone" placeholder="شماره موبایل"></div>
+        <div class="field full"><label>ایمیل</label><input id="customerEmail" type="email" placeholder="example@email.com"></div>
+      </div>
+      <div class="actions">
+        <button class="btn" type="submit" id="customerSubmit">ثبت مشتری</button>
+        <button class="btn secondary hidden" type="button" id="cancelCustomer">لغو ویرایش</button>
+      </div>
+    </form>
+  </div>
+  <div class="panel">
+    <h2>فهرست مشتریان</h2>
+    <div class="table-wrap">
+      <table><thead><tr><th>نام</th><th>شماره تماس</th><th>ایمیل</th><th>عملیات</th></tr></thead>
+      <tbody id="customerRows"></tbody></table>
+    </div>
+  </div>
+</section>
+
+<!-- خدمات -->
+<section class="page" id="services">
+  <div class="panel">
+    <h2>افزودن خدمت جدید</h2>
+    <form id="serviceForm">
+      <div class="form-grid">
+        <div class="field"><label>نام خدمت</label><input id="serviceName" required placeholder="نام خدمت"></div>
+        <div class="field"><label>توضیحات</label><input id="serviceDescription" placeholder="توضیح کوتاه"></div>
+      </div>
+      <div class="actions">
+        <button class="btn" type="submit" id="serviceSubmit">افزودن خدمت</button>
+        <button class="btn secondary hidden" type="button" id="cancelService">لغو ویرایش</button>
+      </div>
+    </form>
+  </div>
+  <div class="panel">
+    <h2>مدیریت خدمات VIRA TECH</h2>
+    <div id="serviceRows"></div>
+  </div>
+</section>
+
+<!-- تنظیمات -->
+<section class="page" id="settings">
+  <div class="panel">
+    <h2>تنظیمات پنل</h2>
+    <p class="muted">اطلاعات این نسخه در حافظه مرورگر شما ذخیره می‌شود.</p>
+    <div class="activity"><span>محل ذخیره اطلاعات</span><strong>مرورگر فعلی</strong></div>
+    <div class="activity"><span>نسخه پنل</span><strong>۲.۰</strong></div>
+    <div class="activity"><span>وضعیت ذخیره‌سازی</span><strong class="green">فعال</strong></div>
+  </div>
+  <div class="panel">
+    <h2>پاک‌سازی اطلاعات</h2>
+    <p class="muted">با این کار تمام پروژه‌ها، مشتریان و خدمات ثبت‌شده حذف می‌شوند.</p>
+    <div class="actions"><button class="btn danger" id="resetData">حذف تمام اطلاعات پنل</button></div>
+  </div>
+</section>
+
+<div class="footer">VIRA TECH © 2026 — تمام حقوق محفوظ است.</div>
+</main>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const defaultServices = [
+ {id:1,name:"VIRA WEB",description:"طراحی وب‌سایت"},
+ {id:2,name:"VIRA ECOMMERCE",description:"فروشگاه اینترنتی"},
+ {id:3,name:"VIRA MANAGEMENT",description:"سیستم مدیریت"},
+ {id:4,name:"VIRA SOFTWARE",description:"نرم‌افزارهای کاربردی"},
+ {id:5,name:"VIRA AI",description:"ابزارهای هوش مصنوعی"},
+ {id:6,name:"VIRA TOOLS",description:"ابزارهای دیجیتال"}
+];
+function load(key,fallback){
+ try{
+  const value=JSON.parse(localStorage.getItem(key));
+  return Array.isArray(value)?value:fallback;
+ }catch(e){return fallback;}
+}
+let projects=load("vira_projects",[]);
+let customers=load("vira_customers",[]);
+let services=load("vira_services",defaultServices.map(s=>({...s,active:true})));
+let editProject=null,editCustomer=null,editService=null;
+const save=()=>{
+ localStorage.setItem("vira_projects",JSON.stringify(projects));
+ localStorage.setItem("vira_customers",JSON.stringify(customers));
+ localStorage.setItem("vira_services",JSON.stringify(services));
+};
+const safe=value=>String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fa=n=>Number(n).toLocaleString("fa-IR");
+const statusText={wait:"در انتظار",progress:"در حال انجام",done:"تکمیل‌شده"};
+
+document.querySelectorAll(".nav button").forEach(btn=>{
+ btn.addEventListener("click",()=>{
+  document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  btn.classList.add("active");
+  $(btn.dataset.page).classList.add("active");
+  $("pageTitle").textContent=btn.textContent.replace(/^[^\s]+\s/,"");
+ });
+});
+
+function updateDashboard(){
+ $("totalProjects").textContent=fa(projects.length);
+ $("totalCustomers").textContent=fa(customers.length);
+ $("totalServices").textContent=fa(services.filter(s=>s.active).length);
+ $("progressCount").textContent=fa(projects.filter(p=>p.status==="progress").length);
+ $("doneCount").textContent=fa(projects.filter(p=>p.status==="done").length);
+ $("waitCount").textContent=fa(projects.filter(p=>p.status==="wait").length);
+ const recent=projects.slice(-5).reverse();
+ $("recentProjects").innerHTML=recent.length?recent.map(p=>
+ `<div class="activity"><span>${safe(p.name)}</span><span>${statusText[p.status]}</span></div>`
+ ).join(""):"هنوز پروژه‌ای ثبت نشده است.";
+}
+function renderProjects(){
+ $("projectRows").innerHTML=projects.length?projects.map(p=>`
+ <tr>
+ <td>${safe(p.name)}</td><td>${safe(p.customer||"—")}</td>
+ <td><span class="status ${p.status}">${statusText[p.status]}</span></td>
+ <td>${safe(p.date||"—")}</td>
+ <td><button class="btn small secondary" onclick="editProjectItem(${p.id})">ویرایش</button>
+ <button class="btn small danger" onclick="deleteProject(${p.id})">حذف</button></td>
+ </tr>`).join(""):'<tr><td colspan="5" class="empty">هنوز پروژه‌ای ثبت نشده است.</td></tr>';
+}
+$("projectForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ const item={id:editProject??Date.now(),name:$("projectName").value.trim(),customer:$("projectCustomer").value.trim(),status:$("projectStatus").value,date:$("projectDate").value};
+ if(editProject!==null)projects=projects.map(p=>p.id===editProject?item:p);
+ else projects.push(item);
+ save();resetProjectForm();renderAll();
+});
+function editProjectItem(id){
+ const p=projects.find(x=>x.id===id);if(!p)return;
+ editProject=id;$("projectName").value=p.name;$("projectCustomer").value=p.customer;
+ $("projectStatus").value=p.status;$("projectDate").value=p.date||"";
+ $("projectSubmit").textContent="ذخیره تغییرات";$("cancelProject").classList.remove("hidden");
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+function deleteProject(id){
+ if(!confirm("این پروژه حذف شود؟"))return;
+ projects=projects.filter(p=>p.id!==id);save();renderAll();
+}
+function resetProjectForm(){
+ $("projectForm").reset();editProject=null;$("projectSubmit").textContent="ثبت پروژه";$("cancelProject").classList.add("hidden");
+}
+$("cancelProject").onclick=resetProjectForm;
+
+function renderCustomers(){
+ $("customerRows").innerHTML=customers.length?customers.map(c=>`
+ <tr><td>${safe(c.name)}</td><td>${safe(c.phone||"—")}</td><td>${safe(c.email||"—")}</td>
+ <td><button class="btn small secondary" onclick="editCustomerItem(${c.id})">ویرایش</button>
+ <button class="btn small danger" onclick="deleteCustomer(${c.id})">حذف</button></td></tr>`
+ ).join(""):'<tr><td colspan="4" class="empty">هنوز مشتری‌ای ثبت نشده است.</td></tr>';
+}
+$("customerForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ const item={id:editCustomer??Date.now(),name:$("customerName").value.trim(),phone:$("customerPhone").value.trim(),email:$("customerEmail").value.trim()};
+ if(editCustomer!==null)customers=customers.map(c=>c.id===editCustomer?item:c);
+ else customers.push(item);
+ save();resetCustomerForm();renderAll();
+});
+function editCustomerItem(id){
+ const c=customers.find(x=>x.id===id);if(!c)return;
+ editCustomer=id;$("customerName").value=c.name;$("customerPhone").value=c.phone;$("customerEmail").value=c.email;
+ $("customerSubmit").textContent="ذخیره تغییرات";$("cancelCustomer").classList.remove("hidden");
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+function deleteCustomer(id){
+ if(!confirm("این مشتری حذف شود؟"))return;
+ customers=customers.filter(c=>c.id!==id);save();renderAll();
+}
+function resetCustomerForm(){
+ $("customerForm").reset();editCustomer=null;$("customerSubmit").textContent="ثبت مشتری";$("cancelCustomer").classList.add("hidden");
+}
+$("cancelCustomer").onclick=resetCustomerForm;
+
+function renderServices(){
+ $("serviceRows").innerHTML=services.length?services.map(s=>`
+ <div class="service-item">
+ <div><strong>${safe(s.name)}</strong><div class="muted">${safe(s.description||"بدون توضیحات")}</div>
+ <span class="muted">${s.active?"فعال":"غیرفعال"}</span></div>
+ <div class="actions">
+ <button class="btn small secondary" onclick="toggleService(${s.id})">${s.active?"غیرفعال‌کردن":"فعال‌کردن"}</button>
+ <button class="btn small secondary" onclick="editServiceItem(${s.id})">ویرایش</button>
+ <button class="btn small danger" onclick="deleteService(${s.id})">حذف</button>
+ </div></div>`).join(""):'<div class="empty">خدمتی ثبت نشده است.</div>';
+}
+$("serviceForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ const item={id:editService??Date.now(),name:$("serviceName").value.trim(),description:$("serviceDescription").value.trim(),active:true};
+ if(editService!==null){
+  const old=services.find(s=>s.id===editService);item.active=old?old.active:true;
+  services=services.map(s=>s.id===editService?item:s);
+ }else services.push(item);
+ save();resetServiceForm();renderAll();
+});
+function editServiceItem(id){
+ const s=services.find(x=>x.id===id);if(!s)return;
+ editService=id;$("serviceName").value=s.name;$("serviceDescription").value=s.description;
+ $("serviceSubmit").textContent="ذخیره تغییرات";$("cancelService").classList.remove("hidden");
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+function toggleService(id){
+ services=services.map(s=>s.id===id?{...s,active:!s.active}:s);save();renderAll();
+}
+function deleteService(id){
+ if(!confirm("این خدمت حذف شود؟"))return;
+ services=services.filter(s=>s.id!==id);save();renderAll();
+}
+function resetServiceForm(){
+ $("serviceForm").reset();editService=null;$("serviceSubmit").textContent="افزودن خدمت";$("cancelService").classList.add("hidden");
+}
+$("cancelService").onclick=resetServiceForm;
+
+$("resetData").onclick=()=>{
+ if(!confirm("مطمئنی تمام اطلاعات پنل حذف شود؟ این کار قابل بازگشت نیست."))return;
+ projects=[];customers=[];services=defaultServices.map(s=>({...s,active:true}));
+ save();renderAll();alert("اطلاعات پنل پاک‌سازی شد.");
+};
+function renderAll(){
+ renderProjects();renderCustomers();renderServices();updateDashboard();
+}
+save();
+renderAll();
+</script>
 </body>
 </html>
