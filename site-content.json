@@ -1,0 +1,51 @@
+{
+  "app": "VIRA TECH",
+  "content": {
+    "siteTitle": "طراحی دیجیتال، فراتر از انتظار",
+    "siteDescription": "ما در VIRA TECH راهکارهای دیجیتال مدرن برای رشد کسب‌وکار شما ارائه می‌دهیم.",
+    "aboutTitle": "درباره VIRA TECH",
+    "aboutDescription": "VIRA TECH یک مجموعه فعال در زمینه طراحی وب‌سایت، فروشگاه اینترنتی و ابزارهای دیجیتال است.",
+    "buttonText": "شروع همکاری",
+    "sitePhone": "989058434159",
+    "siteEmail": "albwhmwdj@gmail.com"
+  },
+  "portfolio": [],
+  "services": [
+    {
+      "id": 1,
+      "name": "VIRA WEB",
+      "description": "طراحی وب‌سایت",
+      "active": true
+    },
+    {
+      "id": 2,
+      "name": "VIRA ECOMMERCE",
+      "description": "فروشگاه اینترنتی",
+      "active": true
+    },
+    {
+      "id": 3,
+      "name": "VIRA MANAGEMENT",
+      "description": "سیستم مدیریت",
+      "active": true
+    },
+    {
+      "id": 4,
+      "name": "VIRA SOFTWARE",
+      "description": "نرم‌افزارهای کاربردی",
+      "active": true
+    },
+    {
+      "id": 5,
+      "name": "VIRA AI",
+      "description": "ابزارهای هوش مصنوعی",
+      "active": true
+    },
+    {
+      "id": 6,
+      "name": "VIRA TOOLS",
+      "description": "ابزارهای دیجیتال",
+      "active": true
+    }
+  ]
+}
