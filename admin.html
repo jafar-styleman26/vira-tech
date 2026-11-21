@@ -594,73 +594,103 @@ renderPricing();
 save();
 renderAll();
 </script>
-  <!-- VIRA TECH ORDER MANAGEMENT -->
+  
+<!-- VIRA TECH ORDER MANAGEMENT -->
+
 <style>
-#viraOrders {
-    margin: 25px auto;
-    padding: 20px;
-    max-width: 1000px;
-    background: #11182d;
-    color: white;
+#orders .panel {
+    background: #11182c;
+    border: 1px solid #252d49;
     border-radius: 15px;
-    font-family: sans-serif;
+    padding: 20px;
+    margin-bottom: 20px;
 }
-#viraOrders input,
-#viraOrders select {
-    padding: 12px;
-    margin: 6px 0;
-    width: 100%;
-    box-sizing: border-box;
-    border: 1px solid #444;
-    border-radius: 8px;
+
+#orders input,
+#orders select {
+    margin-bottom: 12px;
 }
-#viraOrders button {
-    padding: 10px 16px;
-    margin: 5px;
-    border: 0;
-    border-radius: 8px;
-    background: #8065ff;
-    color: white;
-    cursor: pointer;
-}
+
 .vira-order {
     background: #202943;
+    border: 1px solid #343d5a;
     padding: 15px;
     margin-top: 12px;
     border-radius: 10px;
 }
+
+.vira-order p {
+    color: #c4c9dc;
+    font-size: 13px;
+}
 </style>
 
-
 <section class="page" id="orders">
-    <h2>مدیریت سفارش‌های VIRA TECH</h2>
 
-    <h3>ثبت سفارش جدید</h3>
+    <div class="panel">
+        <h2>مدیریت سفارش‌های VIRA TECH</h2>
+        <h3>ثبت سفارش جدید</h3>
 
-    <input id="orderName" placeholder="نام مشتری">
-    <input id="orderPhone" placeholder="شماره تماس">
-    <input id="orderService" placeholder="نوع سفارش یا خدمت">
-    <input id="orderPrice" type="number" placeholder="مبلغ سفارش به تومان">
+        <form id="viraOrderForm">
+            <div class="form-grid">
 
-    <select id="orderStatus">
-        <option value="در انتظار بررسی">در انتظار بررسی</option>
-        <option value="در حال انجام">در حال انجام</option>
-        <option value="تکمیل شده">تکمیل شده</option>
-        <option value="لغو شده">لغو شده</option>
-    </select>
+                <div class="field">
+                    <label>نام مشتری</label>
+                    <input id="orderName" required>
+                </div>
 
-    <button onclick="viraAddOrder()">ثبت سفارش</button>
+                <div class="field">
+                    <label>شماره تماس</label>
+                    <input id="orderPhone" required>
+                </div>
 
-    <h3>فهرست سفارش‌ها</h3>
-    <div id="viraOrderList"></div>
+                <div class="field">
+                    <label>نوع سفارش یا خدمت</label>
+                    <input id="orderService" required>
+                </div>
+
+                <div class="field">
+                    <label>مبلغ سفارش به تومان</label>
+                    <input id="orderPrice" type="number" min="0">
+                </div>
+
+                <div class="field full">
+                    <label>وضعیت سفارش</label>
+                    <select id="orderStatus">
+                        <option value="در انتظار بررسی">در انتظار بررسی</option>
+                        <option value="در حال انجام">در حال انجام</option>
+                        <option value="تکمیل شده">تکمیل شده</option>
+                        <option value="لغو شده">لغو شده</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="actions">
+                <button class="btn" type="submit">ثبت سفارش</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="panel">
+        <h2>فهرست سفارش‌ها</h2>
+        <div id="viraOrderList"></div>
+    </div>
+
 </section>
 
 <script>
 function viraGetOrders() {
-    return JSON.parse(localStorage.getItem("vira_orders") || "[]");
+    try {
+        return JSON.parse(localStorage.getItem("vira_orders") || "[]");
+    } catch (e) {
+        return [];
+    }
 }
 
-function viraAddOrder() {
+function viraAddOrder(event) {
+    event.preventDefault();
+
     const name = document.getElementById("orderName").value.trim();
     const phone = document.getElementById("orderPhone").value.trim();
     const service = document.getElementById("orderService").value.trim();
@@ -668,7 +698,7 @@ function viraAddOrder() {
     const status = document.getElementById("orderStatus").value;
 
     if (!name || !phone || !service) {
-        alert("لطفاً نام، شماره تماس و نوع سفارش را وارد کنید.");
+        alert("لطفاً اطلاعات ضروری را وارد کنید.");
         return;
     }
 
@@ -686,48 +716,24 @@ function viraAddOrder() {
 
     localStorage.setItem("vira_orders", JSON.stringify(orders));
 
-    document.getElementById("orderName").value = "";
-    document.getElementById("orderPhone").value = "";
-    document.getElementById("orderService").value = "";
-    document.getElementById("orderPrice").value = "";
+    document.getElementById("viraOrderForm").reset();
 
     viraRenderOrders();
+    alert("سفارش با موفقیت ثبت شد.");
 }
 
 function viraDeleteOrder(id) {
     if (!confirm("این سفارش حذف شود؟")) return;
 
     const orders = viraGetOrders().filter(order => order.id !== id);
+
     localStorage.setItem("vira_orders", JSON.stringify(orders));
+
     viraRenderOrders();
 }
 
-function viraRenderOrders() {
-    const orders = viraGetOrders();
-    const list = document.getElementById("viraOrderList");
-
-    if (!list) return;
-
-    if (!orders.length) {
-        list.innerHTML = "<p>هنوز سفارشی ثبت نشده است.</p>";
-        return;
-    }
-
-    list.innerHTML = orders.map(order => `
-        <div class="vira-order">
-            <strong>${viraEscape(order.name)}</strong>
-            <p>تلفن: ${viraEscape(order.phone)}</p>
-            <p>خدمت: ${viraEscape(order.service)}</p>
-            <p>مبلغ: ${viraEscape(order.price || "توافقی")} تومان</p>
-            <p>وضعیت: ${viraEscape(order.status)}</p>
-            <p>تاریخ: ${viraEscape(order.date)}</p>
-            <button onclick="viraDeleteOrder(${order.id})">حذف سفارش</button>
-        </div>
-    `).join("");
-}
-
 function viraEscape(value) {
-    return String(value).replace(/[&<>"']/g, char => ({
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
         "&": "&amp;",
         "<": "&lt;",
         ">": "&gt;",
@@ -736,11 +742,39 @@ function viraEscape(value) {
     })[char]);
 }
 
+function viraRenderOrders() {
+    const list = document.getElementById("viraOrderList");
+    if (!list) return;
+
+    const orders = viraGetOrders();
+
+    if (!orders.length) {
+        list.innerHTML = '<div class="empty">هنوز سفارشی ثبت نشده است.</div>';
+        return;
+    }
+
+    list.innerHTML = orders.map(order => `
+        <div class="vira-order">
+            <strong>${viraEscape(order.name)}</strong>
+            <p>شماره تماس: ${viraEscape(order.phone)}</p>
+            <p>خدمت: ${viraEscape(order.service)}</p>
+            <p>مبلغ: ${viraEscape(order.price || "توافقی")} تومان</p>
+            <p>وضعیت: ${viraEscape(order.status)}</p>
+            <p>تاریخ: ${viraEscape(order.date)}</p>
+            <button class="btn small danger"
+                onclick="viraDeleteOrder(${Number(order.id)})">
+                حذف سفارش
+            </button>
+        </div>
+    `).join("");
+}
+
+document.getElementById("viraOrderForm").addEventListener("submit", viraAddOrder);
+
 viraRenderOrders();
 </script>
 
-</main>
-</div>
-
 </body>
 </html>
+
+
