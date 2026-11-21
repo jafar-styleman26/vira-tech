@@ -313,7 +313,30 @@ h1{font-size:19px}
 <button class="btn danger" id="resetData" type="button">حذف تمام اطلاعات</button>
 </div>
 </section>
+<section class="page" id="orders">
+    <h2>مدیریت سفارش‌های VIRA TECH</h2>
 
+    <h3>ثبت سفارش جدید</h3>
+
+    <form id="viraOrderForm">
+        <input id="orderName" placeholder="نام مشتری" required>
+        <input id="orderPhone" placeholder="شماره تماس" required>
+        <input id="orderService" placeholder="نوع سفارش یا خدمت" required>
+        <input id="orderPrice" type="number" placeholder="مبلغ سفارش به تومان">
+
+        <select id="orderStatus">
+            <option value="در انتظار بررسی">در انتظار بررسی</option>
+            <option value="در حال انجام">در حال انجام</option>
+            <option value="تکمیل شده">تکمیل شده</option>
+            <option value="لغو شده">لغو شده</option>
+        </select>
+
+        <button type="submit">ثبت سفارش</button>
+    </form>
+
+    <h3>فهرست سفارش‌ها</h3>
+    <div id="viraOrderList"></div>
+</section>
 <div class="footer">VIRA TECH © 2026 — تمام حقوق محفوظ است.</div>
 </main>
 </div>
