@@ -1,4 +1,4 @@
-
+```html
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -116,6 +116,7 @@ h1{font-size:19px}
 <button data-page="projects">▣ پروژه‌ها</button>
 <button data-page="customers">♙ مشتریان</button>
 <button data-page="services">✦ خدمات</button>
+<button data-page="pricingAdmin">💰 تعرفه‌ها</button>
 <button data-page="content">✎ محتوای سایت</button>
 <button data-page="settings">⚙ تنظیمات</button>
 </nav>
@@ -217,6 +218,38 @@ h1{font-size:19px}
 </div>
 </section>
 
+<section class="page" id="pricingAdmin">
+<div class="notice">
+تعرفه‌ها را در این بخش ویرایش کن. پس از ذخیره، از بخش «محتوای سایت» فایل site-content.json را دوباره دریافت و در GitHub جایگزین کن.
+</div>
+<div class="panel">
+<h2>مدیریت پکیج‌های طراحی وب‌سایت</h2>
+<form id="pricingForm">
+<div class="form-grid">
+<div class="field"><label>نام پکیج اول</label><input id="plan1Name" required></div>
+<div class="field"><label>قیمت پکیج اول (تومان)</label><input id="plan1Price" inputmode="numeric" required></div>
+<div class="field full"><label>توضیح پکیج اول</label><input id="plan1Description"></div>
+<div class="field full"><label>امکانات پکیج اول (هر مورد در یک خط)</label><textarea id="plan1Features"></textarea></div>
+
+<div class="field"><label>نام پکیج دوم</label><input id="plan2Name" required></div>
+<div class="field"><label>قیمت پکیج دوم (تومان)</label><input id="plan2Price" inputmode="numeric" required></div>
+<div class="field full"><label>توضیح پکیج دوم</label><input id="plan2Description"></div>
+<div class="field full"><label>امکانات پکیج دوم (هر مورد در یک خط)</label><textarea id="plan2Features"></textarea></div>
+
+<div class="field"><label>نام پکیج سوم</label><input id="plan3Name" required></div>
+<div class="field"><label>قیمت پکیج سوم (تومان)</label><input id="plan3Price" inputmode="numeric" required></div>
+<div class="field full"><label>توضیح پکیج سوم</label><input id="plan3Description"></div>
+<div class="field full"><label>امکانات پکیج سوم (هر مورد در یک خط)</label><textarea id="plan3Features"></textarea></div>
+
+<div class="field"><label>قیمت شروع فروشگاه اینترنتی (تومان)</label><input id="storePrice" inputmode="numeric" required></div>
+<div class="field full"><label>توضیحات فروشگاه اینترنتی</label><textarea id="storeDescription"></textarea></div>
+</div>
+<div class="actions"><button class="btn" type="submit">ذخیره تعرفه‌ها</button></div>
+<p class="muted" id="pricingMessage"></p>
+</form>
+</div>
+</section>
+
 <section class="page" id="content">
 <div class="notice">
 اطلاعات این بخش در مرورگر ذخیره می‌شوند. پس از ویرایش، فایل JSON را دریافت و در مخزن GitHub سایت بارگذاری کن تا تغییرات برای همه بازدیدکنندگان منتشر شوند.
@@ -233,9 +266,7 @@ h1{font-size:19px}
 <div class="field"><label>شماره واتساپ</label><input id="sitePhone" placeholder="989058434159"></div>
 <div class="field"><label>ایمیل سایت</label><input id="siteEmail" type="email"></div>
 </div>
-<div class="actions">
-<button class="btn" type="submit">ذخیره محتوای سایت</button>
-</div>
+<div class="actions"><button class="btn" type="submit">ذخیره محتوای سایت</button></div>
 </form>
 </div>
 <div class="panel">
@@ -246,9 +277,7 @@ h1{font-size:19px}
 <div class="field"><label>لینک نمونه‌کار</label><input id="portfolioLink" type="url" placeholder="https://example.com"></div>
 <div class="field full"><label>توضیحات</label><textarea id="portfolioDescription"></textarea></div>
 </div>
-<div class="actions">
-<button class="btn" type="submit">افزودن نمونه‌کار</button>
-</div>
+<div class="actions"><button class="btn" type="submit">افزودن نمونه‌کار</button></div>
 </form>
 <div id="portfolioRows"></div>
 </div>
@@ -308,6 +337,17 @@ buttonText:"شروع همکاری",
 sitePhone:"989058434159",
 siteEmail:"albwhmwdj@gmail.com"
 };
+
+const defaultPricing={
+plans:[
+{name:"اقتصادی",price:"3900000",description:"مناسب شروع حضور آنلاین",features:["طراحی سایت معرفی ساده","صفحات اصلی و تماس","نمایش در موبایل و کامپیوتر","طراحی متناسب با برند"]},
+{name:"حرفه‌ای",price:"7900000",description:"مناسب کسب‌وکارهای در حال رشد",features:["تمام امکانات پکیج اقتصادی","صفحات و بخش‌های اختصاصی بیشتر","طراحی حرفه‌ای‌تر","بهینه‌سازی اولیه برای موتورهای جستجو"]},
+{name:"ویژه",price:"14900000",description:"برای نیازهای گسترده‌تر",features:["تمام امکانات پکیج حرفه‌ای","طراحی صفحات اختصاصی بیشتر","امکانات سفارشی توافق‌شده","بررسی و بهینه‌سازی تکمیلی"]}
+],
+storePrice:"12900000",
+storeDescription:"امکاناتی مانند سبد خرید، ثبت سفارش، پنل مدیریت و اتصال درگاه پس از نیازسنجی و بررسی فنی قیمت‌گذاری می‌شوند."
+};
+
 function load(key,fallback){
 try{const v=JSON.parse(localStorage.getItem(key));return v===null?fallback:v;}
 catch(e){return fallback;}
@@ -317,13 +357,16 @@ let customers=load("vira_customers",[]);
 let services=load("vira_services",defaultServices.map(x=>({...x})));
 let content=load("vira_site_content",{...defaultContent});
 let portfolio=load("vira_portfolio",[]);
+let pricing=load("vira_pricing",JSON.parse(JSON.stringify(defaultPricing)));
 let editProject=null,editCustomer=null,editService=null;
+
 function save(){
 localStorage.setItem("vira_projects",JSON.stringify(projects));
 localStorage.setItem("vira_customers",JSON.stringify(customers));
 localStorage.setItem("vira_services",JSON.stringify(services));
 localStorage.setItem("vira_site_content",JSON.stringify(content));
 localStorage.setItem("vira_portfolio",JSON.stringify(portfolio));
+localStorage.setItem("vira_pricing",JSON.stringify(pricing));
 }
 function safe(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 const fa=n=>Number(n).toLocaleString("fa-IR");
@@ -367,6 +410,7 @@ $("doneCount").textContent=fa(projects.filter(p=>p.status==="done").length);
 $("waitCount").textContent=fa(projects.filter(p=>p.status==="wait").length);
 $("recentProjects").innerHTML=projects.length?projects.slice(-5).reverse().map(p=>`<div class="activity"><span>${safe(p.name)}</span><span>${statusText[p.status]||"نامشخص"}</span></div>`).join(""):"هنوز پروژه‌ای ثبت نشده است.";
 }
+
 function renderProjects(){
 $("projectRows").innerHTML=projects.length?projects.map(p=>`<tr><td>${safe(p.name)}</td><td>${safe(p.customer||"—")}</td><td><span class="status ${safe(p.status)}">${statusText[p.status]||"نامشخص"}</span></td><td>${safe(p.date||"—")}</td><td><button class="btn small secondary" onclick="editProjectItem(${Number(p.id)})">ویرایش</button> <button class="btn small danger" onclick="deleteProject(${Number(p.id)})">حذف</button></td></tr>`).join(""):'<tr><td colspan="5" class="empty">پروژه‌ای ثبت نشده است.</td></tr>';
 }
@@ -423,6 +467,41 @@ function deleteService(id){if(!confirm("این خدمت حذف شود؟"))return
 function resetServiceForm(){$("serviceForm").reset();editService=null;$("serviceSubmit").textContent="افزودن خدمت";$("cancelService").classList.add("hidden");}
 $("cancelService").onclick=resetServiceForm;
 
+/* مدیریت تعرفه‌ها */
+function renderPricing(){
+const plans=pricing.plans||defaultPricing.plans;
+plans.forEach((plan,index)=>{
+const n=index+1;
+$("plan"+n+"Name").value=plan.name||"";
+$("plan"+n+"Price").value=plan.price||"";
+$("plan"+n+"Description").value=plan.description||"";
+$("plan"+n+"Features").value=Array.isArray(plan.features)?plan.features.join("\n"):"";
+});
+$("storePrice").value=pricing.storePrice||"";
+$("storeDescription").value=pricing.storeDescription||"";
+}
+$("pricingForm").onsubmit=e=>{
+e.preventDefault();
+const plans=[1,2,3].map(n=>({
+name:$("plan"+n+"Name").value.trim(),
+price:$("plan"+n+"Price").value.replace(/[^\d]/g,""),
+description:$("plan"+n+"Description").value.trim(),
+features:$("plan"+n+"Features").value.split(/\n+/).map(x=>x.trim()).filter(Boolean)
+}));
+if(plans.some(p=>!p.price)){
+alert("لطفاً قیمت هر سه پکیج را وارد کن.");
+return;
+}
+pricing={
+plans,
+storePrice:$("storePrice").value.replace(/[^\d]/g,""),
+storeDescription:$("storeDescription").value.trim()
+};
+save();
+$("pricingMessage").textContent="تعرفه‌ها در مرورگر ذخیره شدند. برای انتشار، فایل JSON را دوباره دریافت کن.";
+alert("تعرفه‌ها ذخیره شدند.");
+};
+
 /* محتوای سایت */
 function renderContent(){
 $("siteTitle").value=content.siteTitle||"";
@@ -467,13 +546,13 @@ a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove()
 setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 $("exportContent").onclick=()=>{
-downloadJSON({app:"VIRA TECH",content:content,portfolio:portfolio,services:services.filter(s=>s.active)},"site-content.json");
+downloadJSON({app:"VIRA TECH",content:content,portfolio:portfolio,services:services.filter(s=>s.active),pricing:pricing},"site-content.json");
 $("contentMessage").textContent="فایل site-content.json دانلود شد. آن را در پوشه اصلی مخزن GitHub قرار بده.";
 };
 
 /* پشتیبان‌گیری کامل */
 $("backupButton").onclick=()=>{
-downloadJSON({app:"VIRA TECH",version:"5.0",date:new Date().toISOString(),projects,customers,services,content,portfolio},"VIRA-TECH-Backup.json");
+downloadJSON({app:"VIRA TECH",version:"5.0",date:new Date().toISOString(),projects,customers,services,content,portfolio,pricing},"VIRA-TECH-Backup.json");
 $("backupMessage").textContent="فایل پشتیبان دانلود شد.";
 };
 $("restoreButton").onclick=()=>$("restoreFile").click();
@@ -486,7 +565,9 @@ const d=JSON.parse(reader.result);
 if(d.app!=="VIRA TECH"||!Array.isArray(d.projects)||!Array.isArray(d.customers)||!Array.isArray(d.services))throw Error();
 if(!confirm("اطلاعات فعلی با فایل پشتیبان جایگزین شود؟"))return;
 projects=d.projects;customers=d.customers;services=d.services;
-content=d.content||{...defaultContent};portfolio=Array.isArray(d.portfolio)?d.portfolio:[];
+content=d.content||{...defaultContent};
+portfolio=Array.isArray(d.portfolio)?d.portfolio:[];
+pricing=d.pricing||JSON.parse(JSON.stringify(defaultPricing));
 save();renderAll();alert("بازیابی اطلاعات انجام شد.");
 }catch(err){alert("فایل پشتیبان معتبر نیست.");}
 finally{e.target.value="";}
@@ -495,11 +576,20 @@ reader.readAsText(file);
 };
 $("resetData").onclick=()=>{
 if(!confirm("تمام پروژه‌ها، مشتریان، خدمات و محتوای سایت حذف شوند؟"))return;
-projects=[];customers=[];services=defaultServices.map(x=>({...x}));content={...defaultContent};portfolio=[];
+projects=[];customers=[];services=defaultServices.map(x=>({...x}));
+content={...defaultContent};portfolio=[];
+pricing=JSON.parse(JSON.stringify(defaultPricing));
 save();renderAll();alert("اطلاعات پاک‌سازی شد.");
 };
 
-function renderAll(){renderProjects();renderCustomers();renderServices();updateDashboard();renderContent();}
+function renderAll(){
+renderProjects();
+renderCustomers();
+renderServices();
+updateDashboard();
+renderContent();
+renderPricing();
+}
 save();
 renderAll();
 </script>
