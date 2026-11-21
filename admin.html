@@ -631,6 +631,7 @@ renderAll();
 }
 </style>
 
+
 <section class="page" id="orders">
     <h2>مدیریت سفارش‌های VIRA TECH</h2>
 
@@ -705,6 +706,8 @@ function viraRenderOrders() {
     const orders = viraGetOrders();
     const list = document.getElementById("viraOrderList");
 
+    if (!list) return;
+
     if (!orders.length) {
         list.innerHTML = "<p>هنوز سفارشی ثبت نشده است.</p>";
         return;
@@ -734,7 +737,10 @@ function viraEscape(value) {
 }
 
 viraRenderOrders();
-  <div class="footer">VIRA TECH © 2026 — تمام حقوق محفوظ است.</div>
 </script>
+
+</main>
+</div>
+
 </body>
 </html>
