@@ -278,7 +278,10 @@ h1{font-size:19px}
 <div class="field"><label>لینک نمونه‌کار</label><input id="portfolioLink" type="url" placeholder="https://example.com"></div>
 <div class="field full"><label>توضیحات</label><textarea id="portfolioDescription"></textarea></div>
 </div>
-<div class="actions"><button class="btn" type="submit">افزودن نمونه‌کار</button></div>
+<div class="actions">
+    <button class="btn" id="portfolioSubmit" type="submit">افزودن نمونه‌کار</button>
+    <button class="btn secondary hidden" id="cancelPortfolio" type="button">لغو ویرایش</button>
+</div>
 </form>
 <div id="portfolioRows"></div>
 </div>
