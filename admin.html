@@ -385,7 +385,7 @@ let services=load("vira_services",defaultServices.map(x=>({...x})));
 let content=load("vira_site_content",{...defaultContent});
 let portfolio=load("vira_portfolio",[]);
 let pricing=load("vira_pricing",JSON.parse(JSON.stringify(defaultPricing)));
-let editProject=null,editCustomer=null,editService=null;
+let editProject=null,editCustomer=null,editService=null,editPortfolio=null;
 
 function save(){
 localStorage.setItem("vira_projects",JSON.stringify(projects));
