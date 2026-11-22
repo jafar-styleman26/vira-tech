@@ -556,7 +556,19 @@ $("contentMessage").textContent="محتوای سایت در مرورگر ذخی�
 alert("محتوای سایت ذخیره شد.");
 };
 function renderPortfolio(){
-$("portfolioRows").innerHTML=portfolio.length?portfolio.map(p=>`<div class="service-item"><div><strong>${safe(p.name)}</strong><div class="muted">${safe(p.description||"بدون توضیحات")}</div><div class="muted">${safe(p.link||"بدون لینک")}</div></div><button class="btn small danger" onclick="deletePortfolio(${Number(p.id)})">حذف</button></div>`).join(""):'<div class="empty">هنوز نمونه‌کاری اضافه نشده است.</div>';
+    $("portfolioRows").innerHTML=portfolio.length?portfolio.map(p=>`
+        <div class="service-item">
+            <div>
+                <strong>${safe(p.name)}</strong>
+                <div class="muted">${safe(p.description||"بدون توضیحات")}</div>
+                <div class="muted">${safe(p.link||"بدون لینک")}</div>
+            </div>
+            <div class="actions">
+                <button class="btn small" onclick="editPortfolioItem(${Number(p.id)})">ویرایش</button>
+                <button class="btn small danger" onclick="deletePortfolio(${Number(p.id)})">حذف</button>
+            </div>
+        </div>
+    `).join(""):'<div class="empty">هنوز نمونه‌کاری اضافه نشده است.</div>';
 }
 $("portfolioForm").onsubmit=e=>{
 e.preventDefault();
