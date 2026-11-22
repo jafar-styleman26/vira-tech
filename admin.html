@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -279,8 +278,8 @@ h1{font-size:19px}
 <div class="field full"><label>توضیحات</label><textarea id="portfolioDescription"></textarea></div>
 </div>
 <div class="actions">
-    <button class="btn" id="portfolioSubmit" type="submit">افزودن نمونه‌کار</button>
-    <button class="btn secondary hidden" id="cancelPortfolio" type="button">لغو ویرایش</button>
+<button class="btn" id="portfolioSubmit" type="submit">افزودن نمونه‌کار</button>
+<button class="btn secondary hidden" id="cancelPortfolio" type="button">لغو ویرایش</button>
 </div>
 </form>
 <div id="portfolioRows"></div>
@@ -556,26 +555,79 @@ $("contentMessage").textContent="محتوای سایت در مرورگر ذخی�
 alert("محتوای سایت ذخیره شد.");
 };
 function renderPortfolio(){
-    $("portfolioRows").innerHTML=portfolio.length?portfolio.map(p=>`
-        <div class="service-item">
-            <div>
-                <strong>${safe(p.name)}</strong>
-                <div class="muted">${safe(p.description||"بدون توضیحات")}</div>
-                <div class="muted">${safe(p.link||"بدون لینک")}</div>
+    $("portfolioRows").innerHTML = portfolio.length
+        ? portfolio.map(p => `
+            <div class="service-item">
+                <div>
+                    <strong>${safe(p.name)}</strong>
+                    <div class="muted">${safe(p.description || "بدون توضیحات")}</div>
+                    <div class="muted">${safe(p.link || "بدون لینک")}</div>
+                </div>
+                <div class="actions">
+                    <button class="btn small secondary" type="button" onclick="editPortfolioItem(${Number(p.id)})">ویرایش</button>
+                    <button class="btn small danger" type="button" onclick="deletePortfolio(${Number(p.id)})">حذف</button>
+                </div>
             </div>
-            <div class="actions">
-                <button class="btn small" onclick="editPortfolioItem(${Number(p.id)})">ویرایش</button>
-                <button class="btn small danger" onclick="deletePortfolio(${Number(p.id)})">حذف</button>
-            </div>
-        </div>
-    `).join(""):'<div class="empty">هنوز نمونه‌کاری اضافه نشده است.</div>';
+        `).join("")
+        : '<div class="empty">هنوز نمونه‌کاری اضافه نشده است.</div>';
 }
-$("portfolioForm").onsubmit=e=>{
-e.preventDefault();
-portfolio.push({id:Date.now(),name:$("portfolioName").value.trim(),link:$("portfolioLink").value.trim(),description:$("portfolioDescription").value.trim()});
-save();$("portfolioForm").reset();renderPortfolio();
+
+function editPortfolioItem(id){
+    const item = portfolio.find(p => Number(p.id) === Number(id));
+    if (!item) return;
+
+    editPortfolio = Number(item.id);
+    $("portfolioName").value = item.name || "";
+    $("portfolioLink").value = item.link || "";
+    $("portfolioDescription").value = item.description || "";
+    $("portfolioSubmit").textContent = "ذخیره تغییرات";
+    $("cancelPortfolio").classList.remove("hidden");
+    $("portfolioForm").scrollIntoView({behavior: "smooth", block: "center"});
+}
+
+function resetPortfolioForm(){
+    editPortfolio = null;
+    $("portfolioForm").reset();
+    $("portfolioSubmit").textContent = "افزودن نمونه‌کار";
+    $("cancelPortfolio").classList.add("hidden");
+}
+
+$("cancelPortfolio").onclick = resetPortfolioForm;
+
+$("portfolioForm").onsubmit = e => {
+    e.preventDefault();
+
+    const item = {
+        name: $("portfolioName").value.trim(),
+        link: $("portfolioLink").value.trim(),
+        description: $("portfolioDescription").value.trim()
+    };
+
+    if (editPortfolio !== null) {
+        portfolio = portfolio.map(p =>
+            Number(p.id) === Number(editPortfolio) ? {...p, ...item} : p
+        );
+    } else {
+        portfolio.push({id: Date.now(), ...item});
+    }
+
+    save();
+    resetPortfolioForm();
+    renderPortfolio();
 };
-function deletePortfolio(id){if(!confirm("این نمونه‌کار حذف شود؟"))return;portfolio=portfolio.filter(p=>p.id!==id);save();renderPortfolio();}
+
+function deletePortfolio(id){
+    if (!confirm("این نمونه‌کار حذف شود؟")) return;
+
+    portfolio = portfolio.filter(p => Number(p.id) !== Number(id));
+
+    if (Number(editPortfolio) === Number(id)) {
+        resetPortfolioForm();
+    }
+
+    save();
+    renderPortfolio();
+}
 
 function downloadJSON(data,filename){
 const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json;charset=utf-8"});
@@ -662,60 +714,6 @@ renderAll();
     font-size: 13px;
 }
 </style>
-
-<section class="page" id="orders">
-
-    <div class="panel">
-        <h2>مدیریت سفارش‌های VIRA TECH</h2>
-        <h3>ثبت سفارش جدید</h3>
-
-        <form id="viraOrderForm">
-            <div class="form-grid">
-
-                <div class="field">
-                    <label>نام مشتری</label>
-                    <input id="orderName" required>
-                </div>
-
-                <div class="field">
-                    <label>شماره تماس</label>
-                    <input id="orderPhone" required>
-                </div>
-
-                <div class="field">
-                    <label>نوع سفارش یا خدمت</label>
-                    <input id="orderService" required>
-                </div>
-
-                <div class="field">
-                    <label>مبلغ سفارش به تومان</label>
-                    <input id="orderPrice" type="number" min="0">
-                </div>
-
-                <div class="field full">
-                    <label>وضعیت سفارش</label>
-                    <select id="orderStatus">
-                        <option value="در انتظار بررسی">در انتظار بررسی</option>
-                        <option value="در حال انجام">در حال انجام</option>
-                        <option value="تکمیل شده">تکمیل شده</option>
-                        <option value="لغو شده">لغو شده</option>
-                    </select>
-                </div>
-
-            </div>
-
-            <div class="actions">
-                <button class="btn" type="submit">ثبت سفارش</button>
-            </div>
-        </form>
-    </div>
-
-    <div class="panel">
-        <h2>فهرست سفارش‌ها</h2>
-        <div id="viraOrderList"></div>
-    </div>
-
-</section>
 
 <script>
 function viraGetOrders() {
